@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="36e42297d9ea4cab9cf0cb02d5b63083" Name="Diagram1">
+        <EntityTypeShape EntityType="team6adprojectdbModel.AdjustmentItem" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.AdjustmentVoucher" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Department" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Disbursement" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.DisbursementItem" Width="1.5" PointX="7.5" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Employee" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Item" Width="1.5" PointX="8" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.OrderItem" Width="1.5" PointX="10.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Requisition" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.RequisitionItem" Width="1.5" PointX="10.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.SOrder" Width="1.5" PointX="8" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Supplier" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.TenderQuotation" Width="1.5" PointX="11.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team6adprojectdbModel.Transaction" Width="1.5" PointX="10.25" PointY="17.75" IsExpanded="true" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_AdjustmentItem_AdjustmentVoucher" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_AdjustmentItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_AdjustmentVoucher_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_AdjustmentVoucher_Employee1" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Department_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Disbursement_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Employee_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Requisition_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Disbursement_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_DisbursementItem_Disbursement" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_DisbursementItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Order_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Order_Employee1" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Order_Employee2" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Requisition_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Requisition_Employee1" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Item_Supplier" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Item_Supplier1" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Item_Supplier2" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_OrderItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_RequisitionItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_TenderQuotation_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Transactions_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_OrderItem_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_RequisitionItem_Requisition" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_Order_Supplier" ManuallyRouted="false" />
+        <AssociationConnector Association="team6adprojectdbModel.FK_TenderQuotation_Supplier" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
