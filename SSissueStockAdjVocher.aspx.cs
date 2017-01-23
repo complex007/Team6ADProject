@@ -1,150 +1,157 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class SSissueStockAdjVocher : System.Web.UI.Page
+namespace SS
 {
-    string id = "";
-    string action = "";
-    string reason = "";
-    protected void Page_Load(object sender, EventArgs e)
+    public partial class SSissueStockAdjVocher : System.Web.UI.Page
     {
-        if (Request.QueryString["id"] != null)
+        List<AdjustmentVoucher> adjs;
+        SSserviceManager ssmanager = new SSserviceManager();
+        protected void Page_Load(object sender, EventArgs e)
         {
-            id = Request.QueryString["id"];
-        }
-        if (Request.QueryString["action"] != null)
-        {
-            action = Request.QueryString["action"];
-            reason = TextBox2.Text;
-        }
-        Session["reason"] = TextBox2.Text;
-        reason = Session["reason"].ToString();
-        if (!IsPostBack)
-        {
-            List<AdjustmentVoucher> adjs = ClassList.findUnapprovedvoucher();
-            if (adjs.Count == 0)
+            adjs =ssmanager.findUnapprovedVouchers();
+            GridView1.DataSource = null;
+            GridView1.DataBind();
+            if (!IsPostBack)
             {
-                Label1.Text = "No approved adjustment";
+
+                if (adjs.Count == 0)
+                {
+                    Label1.Text = "No unapproved adjustment vouchers.";
+                    LinkButton1.Visible = false;
+                    LinkButton2.Visible = false;
+                    TextBox1.Visible = false;
+                    Label2.Visible = false;
+                }
+                else
+                {
+                    refreshGV2();
+                }
             }
-            else
+        }
+
+        protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            switch (e.CommandName)
             {
-                GridView1.DataSource = adjs;
-                GridView1.DataBind();
-            }
+                case "Details":
+                    {
 
-            if (id != null && action != null)
-            {
-                if (action.Equals("Details"))
-                {
-                    List<AdjustmentItem> list = ClassList.findAdjitembyvouchernumber(Convert.ToInt32(id));
-                    GridView2.DataSource = list;
-                    GridView2.DataBind();
-                }
-                if (action.Equals("Reject"))
-                {
-                    if (TextBox2.Text.Trim() != "")
-                    {
-                        AdjustmentVoucher adj = ClassList.findAdjbyvouchernumber(Convert.ToInt32(id));
-                        ClassList.deleteadjustmentByvouchernumber(Convert.ToInt32(id));
-                        adjs.Remove(adj);
-                        string message = "Your order: " + adj.vouchernumber + " is rejected. Reason: " + reason;
-                        ClassList.sendEmail(message);
-                        TextBox2.Text = "";
-                        Response.Redirect("~/SSissueStockAdjVocher.aspx");
-                    }
-                    else
-                    {
-                        Label1.Text = "Please write in reject reason!";
-                    }
-                }
-                if (action.Equals("Approve"))
-                {
-                    AdjustmentVoucher adj = ClassList.findAdjbyvouchernumber(Convert.ToInt32(id));
-                    ClassList.approveAdjVoucher(Convert.ToInt32(id));
-                    adjs.Remove(adj);
-                    GridView1.DataBind();
-                    Label1.Text = "The order is approved today and planed to deliver at " + DateTime.Parse(ClassList.findThreeworkingday(DateTime.Today).ToString()).ToString("MM-dd-yyyy") + " .";
-                }
 
-                if (action.Equals("ApproveAll"))
-                {
-                    foreach (AdjustmentVoucher i in adjs)
-                    {
-                        ClassList.approveAdjVoucher(i.vouchernumber);
-                    }
-
-                    GridView1.DataSource = null;
-                    GridView1.DataBind();
-                    Label1.Text = "The adjustments approved today are planed to deliver at " + DateTime.Parse(ClassList.findThreeworkingday(DateTime.Today).ToString()).ToString("MM-dd-yyyy") + " .";
-                }
-                if (action.Equals("RejectAll"))
-                {
-                    if (TextBox2.Text.Trim() != "")
-                    {
-                        foreach (AdjustmentVoucher i in adjs)
+                        List<AdjustmentItem> adjitems = adjs[Convert.ToInt32(e.CommandArgument)].AdjustmentItems.ToList();
+                        if (adjitems.Count != 0)
                         {
-                            ClassList.deleteadjustmentByvouchernumber(i.vouchernumber);
-                            string message = "Your adjustments: " + i.vouchernumber + " is rejected. Reason: " + reason;
-                            ClassList.sendEmail(message);
-                        }
-                        TextBox2.Text = "";
-                        GridView1.DataSource = null;
-                        GridView1.DataBind();
-                        Label1.Text = "All orders are rejected .";
+                            GridView1.DataSource = adjitems;
+                            GridView1.DataBind();
+                            Label1.Text = "";
 
+                        }
+                        else
+                            Label1.Text = "No items found in adjustment voucher.";
+                        break;
                     }
-                    else
+                case "Reject":
                     {
-                        Label1.Text = "Please write in reject reason!";
+                        int poNum = adjs[Convert.ToInt32(e.CommandArgument)].vouchernumber;
+                        string toemail = adjs[Convert.ToInt32(e.CommandArgument)].Employee.employeeemail;
+                        try
+                        {
+                            ssmanager.deleteAdjustmentByVoucherNumber(poNum);
+                        }
+                        //ClassList.deleteAdjustmentByVoucherNumber(poNum);
+                        catch(SSexception ex)
+                        {
+                            Label1.Text = ex.Message;
+                        }
+                        Label1.Text = String.Format("Adjustment voucher {0} rejected.", poNum);
+                        if (TextBox1.Text.Trim() == "")
+                            ssmanager.sendMailToEmployee(String.Format("Adjustment voucher no. {0} has been rejected.", poNum), "hellocomplex007@gmail.com", toemail);
+                        // ClassList.sendEmail(String.Format("Adjustment voucher no. {0} has been rejected.", poNum));
+                        else
+                            ssmanager.sendMailToEmployee(String.Format("Adjustment voucher no. {0} has been rejected. Reason given: {1}", poNum, TextBox1.Text), "hellocomplex007@gmail.com", toemail);
+                        // ClassList.sendEmail(String.Format("Adjustment voucher no. {0} has been rejected. Reason given: {1}", poNum, TextBox1.Text));
+                        refreshGV2();
+                        break;
                     }
-                }
+                case "Approve":
+                    {
+                        int poNum = adjs[Convert.ToInt32(e.CommandArgument)].vouchernumber;
+                        try
+                        {
+                            ssmanager.approveAdjVoucher(poNum);
+                        }
+                        catch(SSexception ex)
+                        {
+                            Label1.Text = ex.Message;
+                        }
+                        //ClassList.approveAdjVoucher(poNum);
+                        Label1.Text = String.Format("Adjustment voucher number {0} is approved by {1}.", poNum, DateTime.Parse(ClassList.findThreeworkingday(DateTime.Today).ToString()).ToString("MM-dd-yyyy"));
+                        refreshGV2();
+                        break;
+                    }
+                default:
+                    {
+                        Label1.Text = "Sorry, please try again. ";
+                        break;
+                    }
             }
         }
-        else
-        {
-            if (action.Equals("Reject"))
-            {
 
-                if (TextBox2.Text.Trim() != "")
-                {
-                    AdjustmentVoucher adj = ClassList.findAdjbyvouchernumber(Convert.ToInt32(id));
-                    ClassList.deleteadjustmentByvouchernumber(Convert.ToInt32(id));
-                    string message = "Your order: " + adj.vouchernumber + " is rejected. Reason: " + reason;
-                    ClassList.sendEmail(message);
-                    TextBox2.Text = "";
-                    Response.Redirect("~/SSissueStockAdjVocher.aspx");
-                }
-                else
-                {
-                    Label1.Text = "Please write in reject reason!";
-                }
-            }
-            if (action.Equals("RejectAll"))
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            foreach (AdjustmentVoucher i in adjs)
             {
-                List<AdjustmentVoucher> orders = ClassList.findUnapprovedvoucher();
-                if (TextBox2.Text.Trim() != "")
+                try
                 {
-                    foreach (AdjustmentVoucher i in orders)
-                    {
-                        ClassList.deleteadjustmentByvouchernumber(i.vouchernumber);
-                        string message = "Your order: " + i.vouchernumber + " is rejected. Reason: " + reason;
-                        ClassList.sendEmail(message);
-                    }
-                    TextBox2.Text = "";
-                    GridView1.DataSource = null;
-                    GridView1.DataBind();
-                    Label1.Text = "All orders are rejected .";
+                    ssmanager.approveAdjVoucher(i.vouchernumber);
                 }
-                else
+                catch (SSexception ex)
                 {
-                    Label1.Text = "Please xxxxxx write in reject reason!";
+                    Label1.Text = ex.Message;
                 }
             }
+            refreshGV2();
+            Label1.Text = "All Adjustment vouchers approved today and are planned to deliver on " + DateTime.Parse(ClassList.findThreeworkingday(DateTime.Today).ToString()).ToString("MM-dd-yyyy") + ".";
+        }
+        protected void refreshGV2()
+        {
+            adjs = ClassList.findUnapprovedVouchers();
+            GridView2.DataSource = adjs;
+            GridView2.DataBind();
+        }
+
+        protected void LinkButton2_Click(object sender, EventArgs e)
+        {
+            foreach (AdjustmentVoucher i in adjs)
+            {
+                int poNum = i.vouchernumber;
+                string toemail = i.Employee.employeeemail;
+                try
+                {
+                    ssmanager.deleteAdjustmentByVoucherNumber(poNum);
+                }
+                //ClassList.deleteAdjustmentByVoucherNumber(poNum);
+                catch (SSexception ex)
+                {
+                    Label1.Text = ex.Message;
+                }
+                Label1.Text = String.Format("Adjustment voucher {0} rejected.", poNum);
+                if (TextBox1.Text.Trim() == "")
+                    ssmanager.sendMailToEmployee(String.Format("Adjustment voucher no. {0} has been rejected.", poNum), "hellocomplex007@gmail.com", toemail);
+                // ClassList.sendEmail(String.Format("Adjustment voucher no. {0} has been rejected.", poNum));
+                else
+                    ssmanager.sendMailToEmployee(String.Format("Adjustment voucher no. {0} has been rejected. Reason given: {1}", poNum, TextBox1.Text), "hellocomplex007@gmail.com", toemail);
+                // ClassList.sendEmail(String.Format("Adjustment voucher no. {0} has been rejected. Reason given: {1}", poNum, TextBox1.Text));
+                refreshGV2();              
+
+            }
+            TextBox1.Text = "";
+            refreshGV2();
+            Label1.Text = "All Adjustment vouchers have been rejected.";
         }
     }
 }

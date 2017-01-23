@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CryDataSet" targetNamespace="http://tempuri.org/CryDataSet.xsd" xmlns:mstns="http://tempuri.org/CryDataSet.xsd" xmlns="http://tempuri.org/CryDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="team6adprojectdbConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="team6adprojectdbConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.team6adprojectdbConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="team6adprojectdbConnectionString2" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="team6adprojectdbConnectionString2 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.team6adprojectdbConnectionString2.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="reordertrend3TableAdapter" GeneratorDataComponentClassName="reordertrend3TableAdapter" Name="reordertrend3" UserDataComponentName="reordertrend3TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="team6adprojectdbConnectionString2 (Web.config)" DbObjectName="team6adprojectdb.dbo.reordertrend3" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT category, suppliercode, reordermonth, reorderyear, reorderammount FROM dbo.reordertrend3</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="category" DataSetColumn="category" />
+              <Mapping SourceColumn="suppliercode" DataSetColumn="suppliercode" />
+              <Mapping SourceColumn="reordermonth" DataSetColumn="reordermonth" />
+              <Mapping SourceColumn="reorderyear" DataSetColumn="reorderyear" />
+              <Mapping SourceColumn="reorderammount" DataSetColumn="reorderammount" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="requisitiontrendTableAdapter" GeneratorDataComponentClassName="requisitiontrendTableAdapter" Name="requisitiontrend" UserDataComponentName="requisitiontrendTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="team6adprojectdbConnectionString2 (Web.config)" DbObjectName="team6adprojectdb.dbo.requisitiontrend" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT category, deptcode, requistionyear, requsitionmonth, requisitionquantity FROM dbo.requisitiontrend</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="category" DataSetColumn="category" />
+              <Mapping SourceColumn="deptcode" DataSetColumn="deptcode" />
+              <Mapping SourceColumn="requistionyear" DataSetColumn="requistionyear" />
+              <Mapping SourceColumn="requsitionmonth" DataSetColumn="requsitionmonth" />
+              <Mapping SourceColumn="requisitionquantity" DataSetColumn="requisitionquantity" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="CryDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="CryDataSet" msprop:Generator_UserDSName="CryDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="reordertrend3" msprop:Generator_TableClassName="reordertrend3DataTable" msprop:Generator_TableVarName="tablereordertrend3" msprop:Generator_RowChangedName="reordertrend3RowChanged" msprop:Generator_TablePropName="reordertrend3" msprop:Generator_RowDeletingName="reordertrend3RowDeleting" msprop:Generator_RowChangingName="reordertrend3RowChanging" msprop:Generator_RowEvHandlerName="reordertrend3RowChangeEventHandler" msprop:Generator_RowDeletedName="reordertrend3RowDeleted" msprop:Generator_RowClassName="reordertrend3Row" msprop:Generator_UserTableName="reordertrend3" msprop:Generator_RowEvArgName="reordertrend3RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="category" msprop:Generator_ColumnVarNameInTable="columncategory" msprop:Generator_ColumnPropNameInRow="category" msprop:Generator_ColumnPropNameInTable="categoryColumn" msprop:Generator_UserColumnName="category">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="suppliercode" msprop:Generator_ColumnVarNameInTable="columnsuppliercode" msprop:Generator_ColumnPropNameInRow="suppliercode" msprop:Generator_ColumnPropNameInTable="suppliercodeColumn" msprop:Generator_UserColumnName="suppliercode">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="reordermonth" msprop:Generator_ColumnVarNameInTable="columnreordermonth" msprop:Generator_ColumnPropNameInRow="reordermonth" msprop:Generator_ColumnPropNameInTable="reordermonthColumn" msprop:Generator_UserColumnName="reordermonth" type="xs:int" minOccurs="0" />
+              <xs:element name="reorderyear" msprop:Generator_ColumnVarNameInTable="columnreorderyear" msprop:Generator_ColumnPropNameInRow="reorderyear" msprop:Generator_ColumnPropNameInTable="reorderyearColumn" msprop:Generator_UserColumnName="reorderyear" type="xs:int" minOccurs="0" />
+              <xs:element name="reorderammount" msprop:Generator_ColumnVarNameInTable="columnreorderammount" msprop:Generator_ColumnPropNameInRow="reorderammount" msprop:Generator_ColumnPropNameInTable="reorderammountColumn" msprop:Generator_UserColumnName="reorderammount" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="requisitiontrend" msprop:Generator_TableClassName="requisitiontrendDataTable" msprop:Generator_TableVarName="tablerequisitiontrend" msprop:Generator_RowChangedName="requisitiontrendRowChanged" msprop:Generator_TablePropName="requisitiontrend" msprop:Generator_RowDeletingName="requisitiontrendRowDeleting" msprop:Generator_RowChangingName="requisitiontrendRowChanging" msprop:Generator_RowEvHandlerName="requisitiontrendRowChangeEventHandler" msprop:Generator_RowDeletedName="requisitiontrendRowDeleted" msprop:Generator_RowClassName="requisitiontrendRow" msprop:Generator_UserTableName="requisitiontrend" msprop:Generator_RowEvArgName="requisitiontrendRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="category" msprop:Generator_ColumnVarNameInTable="columncategory" msprop:Generator_ColumnPropNameInRow="category" msprop:Generator_ColumnPropNameInTable="categoryColumn" msprop:Generator_UserColumnName="category">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="deptcode" msprop:Generator_ColumnVarNameInTable="columndeptcode" msprop:Generator_ColumnPropNameInRow="deptcode" msprop:Generator_ColumnPropNameInTable="deptcodeColumn" msprop:Generator_UserColumnName="deptcode">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="requistionyear" msprop:Generator_ColumnVarNameInTable="columnrequistionyear" msprop:Generator_ColumnPropNameInRow="requistionyear" msprop:Generator_ColumnPropNameInTable="requistionyearColumn" msprop:Generator_UserColumnName="requistionyear" type="xs:int" minOccurs="0" />
+              <xs:element name="requsitionmonth" msprop:Generator_ColumnVarNameInTable="columnrequsitionmonth" msprop:Generator_ColumnPropNameInRow="requsitionmonth" msprop:Generator_ColumnPropNameInTable="requsitionmonthColumn" msprop:Generator_UserColumnName="requsitionmonth" type="xs:int" minOccurs="0" />
+              <xs:element name="requisitionquantity" msprop:Generator_ColumnVarNameInTable="columnrequisitionquantity" msprop:Generator_ColumnPropNameInRow="requisitionquantity" msprop:Generator_ColumnPropNameInTable="requisitionquantityColumn" msprop:Generator_UserColumnName="requisitionquantity" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
