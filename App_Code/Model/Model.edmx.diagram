@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="36e42297d9ea4cab9cf0cb02d5b63083" Name="Diagram1">
+      <Diagram DiagramId="4e506290ef5744d38ac9aaa448d1c34f" Name="Diagram1">
         <EntityTypeShape EntityType="team6adprojectdbModel.AdjustmentItem" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="team6adprojectdbModel.AdjustmentVoucher" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="team6adprojectdbModel.Department" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
