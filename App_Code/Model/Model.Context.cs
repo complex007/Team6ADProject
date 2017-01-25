@@ -7,34 +7,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
-public partial class team6adprojectdbEntities : DbContext
+namespace Model
 {
-    public team6adprojectdbEntities()
-        : base("name=team6adprojectdbEntities")
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    
+    public partial class team6adprojectdbEntities : DbContext
     {
+        public team6adprojectdbEntities()
+            : base("name=team6adprojectdbEntities")
+        {
+        }
+    
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            throw new UnintentionalCodeFirstException();
+        }
+    
+        public virtual DbSet<AdjustmentItem> AdjustmentItems { get; set; }
+        public virtual DbSet<AdjustmentVoucher> AdjustmentVouchers { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Disbursement> Disbursements { get; set; }
+        public virtual DbSet<DisbursementItem> DisbursementItems { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<Requisition> Requisitions { get; set; }
+        public virtual DbSet<RequisitionItem> RequisitionItems { get; set; }
+        public virtual DbSet<SOrder> SOrders { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<TenderQuotation> TenderQuotations { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
     }
-
-    protected override void OnModelCreating(DbModelBuilder modelBuilder)
-    {
-        throw new UnintentionalCodeFirstException();
-    }
-
-    public virtual DbSet<AdjustmentItem> AdjustmentItems { get; set; }
-    public virtual DbSet<AdjustmentVoucher> AdjustmentVouchers { get; set; }
-    public virtual DbSet<Department> Departments { get; set; }
-    public virtual DbSet<Disbursement> Disbursements { get; set; }
-    public virtual DbSet<DisbursementItem> DisbursementItems { get; set; }
-    public virtual DbSet<Employee> Employees { get; set; }
-    public virtual DbSet<Item> Items { get; set; }
-    public virtual DbSet<OrderItem> OrderItems { get; set; }
-    public virtual DbSet<Requisition> Requisitions { get; set; }
-    public virtual DbSet<RequisitionItem> RequisitionItems { get; set; }
-    public virtual DbSet<SOrder> SOrders { get; set; }
-    public virtual DbSet<Supplier> Suppliers { get; set; }
-    public virtual DbSet<TenderQuotation> TenderQuotations { get; set; }
-    public virtual DbSet<Transaction> Transactions { get; set; }
 }
