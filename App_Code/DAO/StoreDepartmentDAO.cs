@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-public class StockDepartmentDAO
+public class StoreDepartmentDAO
 {
     static team6adprojectdbEntities ds = new team6adprojectdbEntities();
 
@@ -85,6 +85,21 @@ public class StockDepartmentDAO
         int items = item.AdjustmentItems.Count;
         ds.AdjustmentVouchers.Add(item);
         ds.SaveChanges();
-
+    }
+    public static Requisition findLastUnapprovedRequisition(int userNo, string deptcode)
+    {
+        Requisition lastUnapproved = ds.Requisitions.Where(x => x.employeecode == userNo && x.deptcode == deptcode && x.approvercode == null).LastOrDefault();
+        if (lastUnapproved == null)
+        {
+            Requisition result = new Requisition();
+            result.deptcode = deptcode;
+            result.employeecode = userNo;
+            result.status = 0;
+            ds.Requisitions.Add(result);
+            ds.SaveChanges();
+            return result;
+        }
+        else
+            return lastUnapproved;
     }
 }
