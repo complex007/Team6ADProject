@@ -142,5 +142,47 @@ namespace SS
             ds.SaveChanges();
 
         }
+        public static SOrder findLastUnapprovedOrder (int userNo, string suppliercode)
+        {
+            SOrder lastUnapproved = findUnapprovedOrders().Where(x => x.storeclerkcode == userNo && x.suppliercode == suppliercode).LastOrDefault();
+            if (lastUnapproved == null)
+            {
+                SOrder result = new SOrder();
+                result.suppliercode = suppliercode;
+                result.storeclerkcode = userNo;
+                return result;
+            }
+            else
+                return lastUnapproved;
+        }
+        public static double findTenderQuotation (string suppliercode, string itemcode)
+        {
+            TenderQuotation tq = ds.TenderQuotations.Where(x => x.suppliercode == suppliercode && x.itemcode == itemcode).First();
+            return tq.price;
+        }
+        public static bool hasUndeliveredOrders(string itemnumber)
+        {
+            return ds.SOrders.Where(x => x.deliverydate == null && x.OrderItems.Where(y => y.itemcode == itemnumber).Count() > 0).Count() > 0;
+        }
+        public static void addItemOrder(Item item, int userNo)
+        {
+            string itemSupplier = item.supplier1;
+            SOrder lastUnconfirmedAuto = StoreSupplierDAO.findLastUnapprovedOrder(userNo, itemSupplier);
+            foreach (OrderItem oitem in lastUnconfirmedAuto.OrderItems)
+            {
+                if (oitem.Item.itemcode == item.itemcode)
+                {
+                    oitem.orderquantity = oitem.orderquantity + item.reorderquantity;
+                    return;
+                }
+            }
+            OrderItem oi = new OrderItem();
+            oi.Item = item;
+            oi.orderquantity = item.reorderquantity;
+            oi.cost = StoreSupplierDAO.findTenderQuotation(itemSupplier, item.itemcode) * item.reorderquantity;
+            oi.remarks = "Auto-generated";
+            lastUnconfirmedAuto.OrderItems.Add(oi);
+            ds.SaveChanges();
+        }
     }
 }
