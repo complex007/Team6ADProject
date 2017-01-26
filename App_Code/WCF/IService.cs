@@ -242,6 +242,19 @@ public interface IService
     //JSON example: [
     //  "Utown"
     //]
+
+    [OperationContract]
+    [WebGet(UriTemplate = "/employee/currentrepresentative/{headcode}", ResponseFormat = WebMessageFormat.Json)]
+    WCFEmployee findCurrentRepresentative(string headcode);
+    //JSON example: 
+    //        {
+    //  "Del": 0,
+    //  "Deptcode": "ENGL",
+    //  "Employeecode": 1001,
+    //  "Employeeemail": "kaparnanair02@gmail.com",
+    //  "Employeename": "Aparna",
+    //  "Role": "departmentrepresentative"
+    //}
 }
 [DataContract]
 public class WCFDepartment

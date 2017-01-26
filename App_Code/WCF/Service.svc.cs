@@ -145,5 +145,12 @@ public class Service1 : IService
         string[] col = new string[] { collectionpoint };
         return col;
     }
+    public WCFEmployee findCurrentRepresentative(string headid)
+    {
+        int head = Convert.ToInt32(headid);
+        Employee current = dhmanager.getDepartmentRepresentative(head);
+        WCFEmployee wcfcurrent = WCFEmployee.Make(current.employeecode, current.employeename, current.employeeemail, current.deptcode, current.role, current.del);
+        return wcfcurrent;
+    }
 }
 
