@@ -173,6 +173,7 @@ namespace SS
                 if (oitem.Item.itemcode == item.itemcode)
                 {
                     oitem.orderquantity = oitem.orderquantity + item.reorderquantity;
+                    ds.SaveChanges();
                     return;
                 }
             }
