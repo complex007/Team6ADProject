@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,7 +13,7 @@ public partial class DErequestItem : System.Web.UI.Page
     DEserviceManager eM = new DEserviceManager();
     string category;
     string id = " ";
-    int ecode=1002;
+    int ecode = 1002;
     int itemsadded;
     List<String> idesc;
     List<String> icode;
@@ -20,12 +21,12 @@ public partial class DErequestItem : System.Web.UI.Page
     List<String> iunit;
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-      
+
+
 
         if (!IsPostBack)
         {
-            
+
             id = Request.QueryString["id"];
             ecode = 1002;
             loadDropDownList7();
@@ -45,7 +46,7 @@ public partial class DErequestItem : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        
+
         if (Session["idesc"] != null && Session["icode"] != null && Session["iqty"] != null && Session["iunit"] != null)
         {
             idesc = (List<String>)Session["idesc"];
@@ -94,7 +95,7 @@ public partial class DErequestItem : System.Web.UI.Page
         Session["icode"] = icode;
         Session["iqty"] = iqty;
         Session["iunit"] = iunit;
-        System.Diagnostics.Debug.WriteLine(rmbtn.ID +" removed "+ ID[1]);
+        System.Diagnostics.Debug.WriteLine(rmbtn.ID + " removed " + ID[1]);
         Response.Redirect(Request.RawUrl);
 
     }
@@ -102,11 +103,11 @@ public partial class DErequestItem : System.Web.UI.Page
     {
         TextBox qtybox = (TextBox)sender;
         iqty = (List<String>)Session["iqty"];
-        string[] ID = qtybox.ID.Split('q'); 
+        string[] ID = qtybox.ID.Split('q');
         iqty[Convert.ToInt32(ID[1])] = qtybox.Text;
         Session["iqty"] = iqty;
 
-        System.Diagnostics.Debug.WriteLine(qtybox.ID + " VALUE IS" + qtybox.Text +"ID " +ID[1]);
+        System.Diagnostics.Debug.WriteLine(qtybox.ID + " VALUE IS" + qtybox.Text + "ID " + ID[1]);
     }
 
 
@@ -133,7 +134,7 @@ public partial class DErequestItem : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this.Page, "submit failed. try again");
+            MessageBox1.Show(this.Page, "submit failed. try again");
             System.Diagnostics.Debug.WriteLine(ex);
         }
         //No need for else, the validations should display accordingly
@@ -147,8 +148,8 @@ public partial class DErequestItem : System.Web.UI.Page
             category = "Clip";
         }
         else
-        { 
-        category = DropDownList1.Text;
+        {
+            category = DropDownList1.Text;
         }
         List<Item> ilist = eM.PopulateCatDropDownList(category);
         DropDownList7.DataSource = ilist;
@@ -203,7 +204,7 @@ public partial class DErequestItem : System.Web.UI.Page
             qtybox.ID = "q" + i;
             qtybox.Text = iqty.ElementAt(i);
             qtybox.TextChanged += new EventHandler(qtybox_Changed);
-           
+
             rmbtn.Click += new EventHandler(rmbtn_Click);
             rmbtn.ID = "r" + i;
             rmbtn.Text = "Remove";
@@ -211,7 +212,7 @@ public partial class DErequestItem : System.Web.UI.Page
             PlaceHolder1.Controls.Add(lblitem);
             PlaceHolder2.Controls.Add(qtybox);
             PlaceHolder4.Controls.Add(lblunit);
-            range.ID = "rangeqty"+i;
+            range.ID = "rangeqty" + i;
             range.ControlToValidate = qtybox.ID;
             range.MaximumValue = "999";
             range.MinimumValue = "1";
@@ -219,10 +220,10 @@ public partial class DErequestItem : System.Web.UI.Page
             range.ForeColor = System.Drawing.Color.Red;
             range.ErrorMessage = "Invalid Quantity";
             range.EnableClientScript = false;
-                       
+
             PlaceHolder5.Controls.Add(range);
             PlaceHolder3.Controls.Add(rmbtn);
-            
+
             PlaceHolder1.Controls.Add(new LiteralControl("<br/>"));
             PlaceHolder2.Controls.Add(new LiteralControl("<br/>"));
             PlaceHolder3.Controls.Add(new LiteralControl("<br/>"));
@@ -233,7 +234,9 @@ public partial class DErequestItem : System.Web.UI.Page
     }
 
 }
-public static class MessageBox
+
+
+public static class MessageBox1
 {
     public static void Show(this Page Page, String Message)
     {

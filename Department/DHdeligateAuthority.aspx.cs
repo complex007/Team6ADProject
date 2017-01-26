@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -102,13 +103,13 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this.Page, "delegation failed. try again");
+            MessageBox1.Show(this.Page, "delegation failed. try again");
             System.Diagnostics.Debug.WriteLine(ex);
         }
     }
         
 }
-public static class MessageBox
+public static class MessageBox1
 {
     public static void Show(this Page Page, String Message)
     {

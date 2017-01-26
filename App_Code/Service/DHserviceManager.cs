@@ -1,16 +1,15 @@
-﻿using SS.DAO;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
 
-namespace SS.Service
-{
-    /// <summary>
-    /// Summary description for DHserviceManager
-    /// </summary>
-    public class DHserviceManager
+
+/// <summary>
+/// Summary description for DHserviceManager
+/// </summary>
+public class DHserviceManager
     {
         DepartmentDAO ddao = new DepartmentDAO();
         public DHserviceManager()
@@ -144,7 +143,4 @@ namespace SS.Service
             return item;
 
         }
-
-
     }
-}

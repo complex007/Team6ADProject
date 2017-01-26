@@ -1,12 +1,11 @@
-﻿using SS.DAO;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SS.Service
-{
-    public class SCserviceManager
+
+public class SCserviceManager
     {
         public string[] listDeliverCollectionPoint()
         {
@@ -53,5 +52,3 @@ namespace SS.Service
 
         }
     }
-
-}

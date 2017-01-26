@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -7,6 +8,7 @@ using System.Web;
 /// <summary>
 /// Summary description for DEserviceManager
 /// </summary>
+
 public class DEserviceManager
 {
     DepartmentDAO ddao = new DepartmentDAO();
@@ -34,7 +36,7 @@ public class DEserviceManager
 
     public List<dynamic> retreiveRequistionsItems(int empcode)
     {
-       return ddao.retreiveRequistionsItems(empcode);
+        return ddao.retreiveRequistionsItems(empcode);
     }
 
     public void updateRequistionsItems(string itemcode, string qty, string reqid, string orgqty)

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
 
-namespace SS
-{
-    public class SSserviceManager
+
+public class SSserviceManager
     {
         public List<SOrder> findUnapprovedOrders()
         {
@@ -83,11 +83,11 @@ namespace SS
                 return slist;
             }
         }
-        public CryDataSet setReorderDataSet(string que)
+        public SS.CryDataSet setReorderDataSet(string que)
         {
             return StoreSupplierDAO.setReorderDataSet(que);
         }
-        public CryDataSet setRequisitionDataSet(string que)
+        public SS.CryDataSet setRequisitionDataSet(string que)
         {
             return StoreSupplierDAO.setRequisitionDataSet(que);
         }
@@ -199,7 +199,7 @@ namespace SS
         }
         public static void raiseReorder(Item item, int userNo)
         {
-            StoreSupplierDAO.addItemOrder(item, userNo);
+            string itemSupplier = item.supplier1;
+            StoreSupplierDAO.addItemOrder(item, userNo, itemSupplier);
         }
     }
-}
