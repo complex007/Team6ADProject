@@ -26,6 +26,9 @@
         <br />
         <asp:GridView ID="GridView2" runat="server">
         </asp:GridView>
+        <asp:LinkButton ID="AddAllLinkButton" runat="server" OnClick="AddAllLinkButton_Click">Add All</asp:LinkButton>
+&nbsp;&nbsp;&nbsp;
+        <asp:LinkButton ID="RefreshDBLinkButton" runat="server" OnClick="RefreshDBLinkButton_Click">Rebuild AspnetDB from Local DB</asp:LinkButton>
     </form>
 </body>
 </html>

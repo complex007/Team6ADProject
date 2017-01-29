@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 public partial class test : System.Web.UI.Page
 {
     team6adprojectdbEntities ctx;
+    AdminserviceManager asm = new AdminserviceManager();
     protected void Page_Load(object sender, EventArgs e)
     {
         ctx = new team6adprojectdbEntities();
@@ -21,8 +22,7 @@ public partial class test : System.Web.UI.Page
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         Employee emp = ctx.Employees.ToList()[Convert.ToInt32(e.CommandArgument)];
-        MembershipCreateStatus createStatus = EmployeeDAO.InsertEmployeeIntoFormsAuth(emp);
-        //MembershipUser newUser = Membership.CreateUser(emp.employeename, "abcdefgh1@", emp.employeeemail, null, null, true, out createStatus);
+        MembershipCreateStatus createStatus = asm.AddEmployeeToForms(emp);
         string Text = "";
         switch (createStatus)
         {
@@ -51,17 +51,33 @@ public partial class test : System.Web.UI.Page
                 break;
         }
         Label1.Text = Text;
-        string createRole = emp.role;
-        if (!Roles.RoleExists(createRole))
-        {
-            Roles.CreateRole(createRole);
-            Label1.Text = Text + "[Role created: " + createRole + "]";
-            refreshGridView2();
-        }
+
+        refreshGridView2();
     }
-    public void refreshGridView2()
+
+    protected void refreshGridView2()
     {
         GridView2.DataSource = Roles.GetAllRoles();
         GridView2.DataBind();
+    }
+
+    protected void AddAllLinkButton_Click(object sender, EventArgs e)
+    {
+        foreach (Employee emp in ctx.Employees)
+        {
+            MembershipCreateStatus createStatus = asm.AddEmployeeToForms(emp);
+            Label1.Text = "All Employees added to Authentication Database.";
+        }
+    }
+
+
+    protected void RefreshDBLinkButton_Click(object sender, EventArgs e)
+    {
+        asm.clearAllForms();
+        foreach (Employee emp in ctx.Employees)
+        {
+            MembershipCreateStatus createStatus = asm.AddEmployeeToForms(emp);
+            Label1.Text = "All Employees added to Authentication Database.";
+        }
     }
 }
