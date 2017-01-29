@@ -21,8 +21,8 @@ public partial class test : System.Web.UI.Page
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         Employee emp = ctx.Employees.ToList()[Convert.ToInt32(e.CommandArgument)];
-        MembershipCreateStatus createStatus;
-        MembershipUser newUser = Membership.CreateUser(emp.employeecode.ToString(), "abcdefgh1@", emp.employeeemail, null, null, true, out createStatus);
+        MembershipCreateStatus createStatus = EmployeeDAO.InsertEmployeeIntoFormsAuth(emp);
+        //MembershipUser newUser = Membership.CreateUser(emp.employeename, "abcdefgh1@", emp.employeeemail, null, null, true, out createStatus);
         string Text = "";
         switch (createStatus)
         {

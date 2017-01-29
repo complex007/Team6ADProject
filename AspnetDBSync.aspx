@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="test.aspx.cs" Inherits="test" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AspnetDBSync.aspx.cs" Inherits="test" %>
 
 <!DOCTYPE html>
 
