@@ -109,14 +109,14 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
     }
         
 }
-public static class MessageBox1
-{
-    public static void Show(this Page Page, String Message)
-    {
-        Page.ClientScript.RegisterStartupScript(
-           Page.GetType(),
-           "MessageBox",
-           "<script language='javascript'>alert('" + Message + "');</script>"
-        );
-    }
-}
+//public static class MessageBox1
+//{
+//    public static void Show(this Page Page, String Message)
+//    {
+//        Page.ClientScript.RegisterStartupScript(
+//           Page.GetType(),
+//           "MessageBox",
+//           "<script language='javascript'>alert('" + Message + "');</script>"
+//        );
+//    }
+//}
