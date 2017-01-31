@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeFile="SSissueStockAdjVocher.aspx.cs" Inherits="SSissueStockAdjVocher" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeFile="SSissueStockAdjVocher.aspx.cs" Inherits="SSissueStockAdjVocher" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <h3>StockAdjustVoucherForm</h3>
