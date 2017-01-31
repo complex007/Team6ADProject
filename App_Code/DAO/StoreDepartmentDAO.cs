@@ -21,7 +21,11 @@ public class StoreDepartmentDAO
         foreach (string i in requestdeptcode)
         {
             string cp = ds.Departments.Where(x => x.deptcode == i).Select(y => y.collectionpoint).FirstOrDefault();
-            clist.Add(cp);
+            if(!clist.Contains(cp))
+            {
+                clist.Add(cp);
+            }
+           
         }
         return clist;
     }
