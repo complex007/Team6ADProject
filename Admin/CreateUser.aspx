@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeFile="CreateUser.aspx.cs" Inherits="CreateUser" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeFile="CreateUser.aspx.cs" Inherits="CreateUser" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <asp:CreateUserWizard ID="CreateUserWizard1" runat="server" OnCreatedUser="CreateUserWizard1_CreatedUser">
@@ -47,7 +47,7 @@
                         </tr>
                         <tr>
                             <td align="right">
-                                <asp:Label ID="DeptLabel" runat="server" AssociatedControlID="Answer">Security Answer:</asp:Label>
+                                <asp:Label ID="DeptLabel" runat="server" AssociatedControlID="Answer">Department Code:</asp:Label>
                             </td>
                             <td>
                                 <asp:DropDownList ID="DeptList" runat="server" DataSourceID="SqlDataSource1" DataTextField="deptcode" DataValueField="deptcode">

@@ -115,48 +115,27 @@ public interface IService
     List<WCFRequisitionItem> findRequisitionItemsByHead(string headcode);
     //JSON example:
     //        [
-    //  {
-    //    "Itemcode": "F021",
-    //    "Quantity": 74,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "F035",
-    //    "Quantity": 64,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "H011",
-    //    "Quantity": 8,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "S011",
-    //    "Quantity": 87,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "S012",
-    //    "Quantity": 38,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "S021",
-    //    "Quantity": 32,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  },
-    //  {
-    //    "Itemcode": "S101",
-    //    "Quantity": 94,
-    //    "Requisitionid": 2,
-    //    "Status": 0
-    //  }
+    // {
+    //  "Itemcode": "F021",
+    //  "Itemdescription": "File-Blue Plain",
+    //  "Quantity": 74,
+    //  "Requisitionid": 2,
+    //  "Status": 0
+    //},
+    //{
+    //  "Itemcode": "F035",
+    //  "Itemdescription": "Folder Plastic Yellow",
+    //  "Quantity": 64,
+    //  "Requisitionid": 2,
+    //  "Status": 0
+    //},
+    //{
+    //  "Itemcode": "H011",
+    //  "Itemdescription": "Highlighter Blue",
+    //  "Quantity": 8,
+    //  "Requisitionid": 2,
+    //  "Status": 0
+    //}
     //]
 
 
@@ -846,14 +825,16 @@ public class WCFRequisitionItem
 {
     int requisitionid;
     string itemcode;
+    string itemdescription;
     int quantity;
     int status;
 
-    public static WCFRequisitionItem Make(int requisitionid, string itemcode, int quantity, int status)
+    public static WCFRequisitionItem Make(int requisitionid, string itemcode, string itemdescription, int quantity, int status)
     {
         WCFRequisitionItem item = new WCFRequisitionItem();
         item.requisitionid = requisitionid;
         item.itemcode = itemcode;
+        item.Itemdescription = itemdescription;
         item.quantity = quantity;
         item.status = status;
         return item;
@@ -908,6 +889,19 @@ public class WCFRequisitionItem
         set
         {
             status = value;
+        }
+    }
+    [DataMember]
+    public string Itemdescription
+    {
+        get
+        {
+            return itemdescription;
+        }
+
+        set
+        {
+            itemdescription = value;
         }
     }
 }

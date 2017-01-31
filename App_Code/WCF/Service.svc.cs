@@ -89,7 +89,8 @@ public class Service1 : IService
         List<RequisitionItem> rlist = dhmanager.findRequisitionItemsByHead(headcode);
         foreach (RequisitionItem j in rlist)
         {
-            WCFRequisitionItem wcfitem = WCFRequisitionItem.Make(j.requisitionid, j.itemcode, j.quantity, j.status);
+
+            WCFRequisitionItem wcfitem = WCFRequisitionItem.Make(j.requisitionid, j.itemcode, j.Item.itemdescription, j.quantity, j.status);
             rilist.Add(wcfitem);
         }
         return rilist;
