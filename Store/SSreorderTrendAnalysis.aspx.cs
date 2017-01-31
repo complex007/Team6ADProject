@@ -47,7 +47,7 @@ public partial class Store_SSreorderTrendAnalysis : System.Web.UI.Page
 
 
         string que = " select c.category,d.suppliercode,Month(d.deliverydate) as reordermonth,YEAR(d.deliverydate) as reorderyear, sum(b.cost) as reorderammount from OrderItem b,Item c ,sorder d where b.itemcode = c.itemcode and d.purchaseordernumber = b.purchaseordernumber  group by d.suppliercode, c.category, Month(d.deliverydate), YEAR(d.deliverydate)";
-        CryDataSet ds = ssmanager.setReorderDataSet(que);
+        SS.CryDataSet ds = ssmanager.setReorderDataSet(que);
         SS.SSreorderTrend cryview2 = new SS.SSreorderTrend();
 
         cryview2.SetDataSource(ds);
@@ -112,7 +112,7 @@ public partial class Store_SSreorderTrendAnalysis : System.Web.UI.Page
             +
             "group by d.suppliercode, c.category, Month(d.deliverydate), YEAR(d.deliverydate)"
             ;
-        CryDataSet ds = ssmanager.setReorderDataSet(que);
+        SS.CryDataSet ds = ssmanager.setReorderDataSet(que);
         SS.SSreorderTrend cryview2 = new SS.SSreorderTrend();
 
         cryview2.SetDataSource(ds);

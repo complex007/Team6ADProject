@@ -42,8 +42,8 @@ public partial class Store_SSrequisitionTrendAnalysis : System.Web.UI.Page
             Btngenerate.Enabled = false;
         }
         string que = "select c.category,d.deptcode,Year(d.collectiondate) as requistionyear ,Month(d.collectiondate) as requsitionmonth, sum(b.actualquantity) as requisitionquantity from DisbursementItem b,Item c, Disbursement d where  b.itemcode = c.itemcode and d.disbursementid = b.disbursementid group by  c.category,d.deptcode,Month(d.collectiondate),YEAR(d.collectiondate)";
-        CryDataSet ds = ssmanager.setRequisitionDataSet(que);
-        SSrequisitionTrend cryview2 = new SSrequisitionTrend();
+        SS.CryDataSet ds = ssmanager.setRequisitionDataSet(que);
+        SS.SSrequisitionTrend cryview2 = new SS.SSrequisitionTrend();
         cryview2.SetDataSource(ds);
         CrystalReportViewer1.ReportSource = cryview2;
     }
@@ -98,8 +98,8 @@ public partial class Store_SSrequisitionTrendAnalysis : System.Web.UI.Page
             +
                 " group by  c.category,d.deptcode,Month(d.collectiondate),YEAR(d.collectiondate)"
             ;
-        CryDataSet ds = ssmanager.setRequisitionDataSet(que);
-        SSrequisitionTrend cryview2 = new SSrequisitionTrend();
+        SS.CryDataSet ds = ssmanager.setRequisitionDataSet(que);
+        SS.SSrequisitionTrend cryview2 = new SS.SSrequisitionTrend();
         cryview2.SetDataSource(ds);
         CrystalReportViewer1.ReportSource = cryview2;
 

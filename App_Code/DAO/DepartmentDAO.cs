@@ -346,7 +346,7 @@ public class DepartmentDAO
         try
         {
             Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "departmenthead").First();
-            e.role = "delegatedHead";
+            e.role = "delegatedhead";
             deptcode = e.deptcode;
             Employee e1 = ctx.Employees.Where(x => x.employeecode == ecode).First();
             e1.role = "delegatedemployee";

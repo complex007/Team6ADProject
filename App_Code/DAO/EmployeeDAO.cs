@@ -24,6 +24,7 @@ public static class EmployeeDAO
         {
             Roles.CreateRole(createRole);
         }
+        Roles.AddUserToRole(newUser.UserName, createRole);
         return createStatus;
     }
     public static void CreateNewEmployee(Employee emp)

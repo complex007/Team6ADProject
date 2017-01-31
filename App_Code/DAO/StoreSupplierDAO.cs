@@ -188,7 +188,6 @@ public class StoreSupplierDAO
         }
         else
         {
-            Console.WriteLine("here i am");
             OrderItem oi = lastUnconfirmedAuto.OrderItems.Where(x => x.itemcode == item.itemcode && x.purchaseordernumber == lastUnconfirmedAuto.purchaseordernumber).First();
             oi.orderquantity = oi.orderquantity + item.reorderquantity;
             oi.cost = StoreSupplierDAO.findTenderQuotation(itemSupplier, item.itemcode) * oi.orderquantity;
