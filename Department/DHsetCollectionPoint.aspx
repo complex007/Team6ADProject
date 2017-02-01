@@ -11,7 +11,7 @@
     </asp:RadioButtonList>
     <asp:Label ID="Label1" runat="server" Text="Label"> Current Collection Point :</asp:Label>
     <asp:Label ID="Label2" runat="server" style="z-index: 1; position: absolute; top: 42px; left: 13px" Text="Select Prefered Location :"></asp:Label>
-    <asp:TextBox ID="TextBox1" runat="server" style="z-index: 1; position: absolute; top: 0px; left: 241px; width: 166px" ReadOnly="true">Kent Ridge</asp:TextBox>
+    <asp:Label ID="Label3" runat="server"></asp:Label>
 
 
 <asp:Button ID="Button1" runat="server" style="z-index: 1; position: absolute; top: 279px; left: 106px; height: 24px;" Text="Submit" OnClick="Button1_Click"  />

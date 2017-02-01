@@ -18,7 +18,7 @@ public static class EmployeeDAO
     public static MembershipCreateStatus InsertEmployeeIntoFormsAuth(Employee emp)
     {
         MembershipCreateStatus createStatus;
-        MembershipUser newUser = Membership.CreateUser(emp.employeename, "abcdefgh1@", emp.employeeemail, null, null, true, out createStatus);
+        MembershipUser newUser = Membership.CreateUser(emp.employeecode.ToString(), "abcdefgh1@", emp.employeeemail, null, null, true, out createStatus);
         string createRole = emp.role;
         if (!Roles.RoleExists(createRole))
         {

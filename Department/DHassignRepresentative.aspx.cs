@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class DHassignRepresentative : System.Web.UI.Page
 {
-    string id;
     int headcode;
     static Employee e1;
     DHserviceManager d = new DHserviceManager();
@@ -17,9 +17,9 @@ public partial class DHassignRepresentative : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            id = Request.QueryString["id"];
-            headcode = 1000;
-          e1 = d.getDepartmentRepresentative(headcode);
+            IIdentity id = User.Identity;
+            headcode = Convert.ToInt32(User.Identity.Name);
+            e1 = d.getDepartmentRepresentative(headcode);
             List<Employee> elist = d.PopulateEmpList(headcode);
             DropDownList1.DataSource = elist;
             DropDownList1.DataTextField = "employeename";

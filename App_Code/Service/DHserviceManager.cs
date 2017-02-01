@@ -10,74 +10,76 @@ using System.Web;
 /// Summary description for DHserviceManager
 /// </summary>
 public class DHserviceManager
+{
+    DepartmentDAO ddao = new DepartmentDAO();
+    public DHserviceManager()
     {
-        DepartmentDAO ddao = new DepartmentDAO();
-        public DHserviceManager()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-        public Department DHfindCurrentCollectionPoint(int id)
-        {
-            return ddao.DHfindCurrentCollectionPoint(id);
-        }
-        public void DHupdateCollectionPoint(string Cpoint, int headcode)
-        {
-            ddao.DHupdateCollectionPoint(Cpoint, headcode);
-        }
-        public Employee getDepartmentRepresentative(int headcode)
-        {
-            return ddao.getDepartmentRepresentative(headcode);
-        }
-        public List<Employee> PopulateEmpList(int headcode)
-        {
-            return ddao.PopulateEmpList(headcode);
-        }
-        public void setRepresentative(int empCode)
-        {
-            ddao.setRepresentative(empCode);
-        }
-        public void changePreviousRepresentative(int empCode)
-        {
-            ddao.changePreviousRepresentative(empCode);
-        }
-        public List<Requisition> DHgetRequestionItems(int headcode)
-        {
-            return ddao.DHgetRequestionItems(headcode);
-        }
-        public IEnumerable<dynamic> getItems(int reqid)
-        {
-            return ddao.getItems(reqid);
-        }
+        //
+        // TODO: Add constructor logic here
+        //
+    }
+    public Department DHfindCurrentCollectionPoint(int id)
+    {
+        return ddao.DHfindCurrentCollectionPoint(id);
+    }
+    public void DHupdateCollectionPoint(string Cpoint, int headcode)
+    {
+        ddao.DHupdateCollectionPoint(Cpoint, headcode);
+    }
+    public Employee getDepartmentRepresentative(int headcode)
+    {
+        return ddao.getDepartmentRepresentative(headcode);
+    }
+    public List<Employee> PopulateEmpList(int headcode)
+    {
+        return ddao.PopulateEmpList(headcode);
+    }
+    public void setRepresentative(int empCode)
+    {
+        ddao.setRepresentative(empCode);
+    }
+    public void changePreviousRepresentative(int empCode)
+    {
+        ddao.changePreviousRepresentative(empCode);
+    }
+    public List<Requisition> DHgetRequestionItems(int headcode)
+    {
+        return ddao.DHgetRequestionItems(headcode);
+    }
+    public IEnumerable<dynamic> getItems(int reqid)
+    {
+        return ddao.getItems(reqid);
+    }
 
-        public void approve(int id, int headcode)
+    public void approve(int id, int headcode)
+    {
+
+        ddao.approve(id, headcode);
+    }
+
+    public void reject(int id)
+    {
+
+        ddao.reject(id);
+
+    }
+
+    public void sendRejectEmail(string comments)
+    {
+        if (comments != null)
         {
-
-            ddao.approve(id, headcode);
+            sendEmail(comments);
         }
-
-        public void reject(int id)
+        else
         {
-
-            ddao.reject(id);
-
+            comments = "your request was rejected";
+            sendEmail(comments);
         }
+    }
 
-        public void sendRejectEmail(string comments)
-        {
-            if (comments != null)
-            {
-                sendEmail(comments);
-            }
-            else
-            {
-                comments = "your request was rejected";
-                sendEmail(comments);
-            }
-        }
-
-        public void sendEmail(string message)
+    public void sendEmail(string message)
+    {
+        try
         {
             // string email;
             // List<int> ids = new List<int>();
@@ -106,41 +108,46 @@ public class DHserviceManager
             smtpClient.Send(mail);
             //  }
         }
-
-        public string getEmployee(int requid)
+        catch (Exception e)
         {
-            return ddao.getEmployee(requid);
-
-
-        }
-
-        public Employee getDepartmentRepresentativeByDept(string dept)
-        {
-            return ddao.getDepartmentRepresentativeByDept(dept);
-        }
-        public List<Employee> getAllEmployees(int headcode)
-        {
-            return ddao.getAllEmployees(headcode);
-        }
-
-        public void delegateAuthority(int headcode, int ecode, DateTime from, DateTime to)
-        {
-            ddao.delegateAuthority(headcode, ecode, from, to);
-        }
-
-        public void retriveAuthority(int headcode)
-        {
-            ddao.retriveAuthority(headcode);
-        }
-        public List<RequisitionItem> findRequisitionItemsByHead(int headcode)
-        {
-            List<RequisitionItem> items = ddao.findRequisitionItemsByHead(  headcode);
-            return items;
-        }
-        public Requisition findRequisitionByRequisitionId(int requisitionid)
-        {
-            Requisition item=ddao.findRequisitionByRequisitionId(requisitionid);
-            return item;
-
+            ddao.errormessage("Mail was not sent." + e.ToString());
         }
     }
+
+    public string getEmployee(int requid)
+    {
+        return ddao.getEmployee(requid);
+
+
+    }
+
+    public Employee getDepartmentRepresentativeByDept(string dept)
+    {
+        return ddao.getDepartmentRepresentativeByDept(dept);
+    }
+    public List<Employee> getAllEmployees(int headcode)
+    {
+        return ddao.getAllEmployees(headcode);
+    }
+
+    public void delegateAuthority(int headcode, int ecode, DateTime from, DateTime to)
+    {
+        ddao.delegateAuthority(headcode, ecode, from, to);
+    }
+
+    public void retriveAuthority(int headcode)
+    {
+        ddao.retriveAuthority(headcode);
+    }
+    public List<RequisitionItem> findRequisitionItemsByHead(int headcode)
+    {
+        List<RequisitionItem> items = ddao.findRequisitionItemsByHead(headcode);
+        return items;
+    }
+    public Requisition findRequisitionByRequisitionId(int requisitionid)
+    {
+        Requisition item = ddao.findRequisitionByRequisitionId(requisitionid);
+        return item;
+
+    }
+}

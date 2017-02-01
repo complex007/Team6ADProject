@@ -199,7 +199,7 @@ public class DepartmentDAO
     public Department DHfindCurrentCollectionPoint(int id)
     {
         Department d1 = new Department();
-        Employee e1 = ctx.Employees.Where(x => x.role == "departmenthead" && x.employeecode == id).First();
+        Employee e1 = ctx.Employees.Where(x => x.employeecode == id).First();
         string deptcode = e1.deptcode;
         d1 = ctx.Departments.Where(x => x.deptcode == deptcode).First();
         return d1;
@@ -208,7 +208,7 @@ public class DepartmentDAO
     {
         try
         {
-            Employee e1 = ctx.Employees.Where(x => x.role == "departmenthead" && x.employeecode == headcode).First();
+            Employee e1 = ctx.Employees.Where(x => x.employeecode == headcode).First();
             string deptcode = e1.deptcode;
             Department d1 = ctx.Departments.Where(x => x.deptcode == deptcode).First();
             d1.collectionpoint = Cpoint;

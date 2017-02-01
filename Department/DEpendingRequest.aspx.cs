@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,11 +11,12 @@ public partial class DEpendingRequest : System.Web.UI.Page
 
     DEserviceManager eM = new DEserviceManager();
     string category;
-    string id = " ";
-    int ecode = 1002;
+    int ecode;
 
     protected void Page_Load(object sender, EventArgs e)
-    {  
+    {
+        IIdentity id = User.Identity;
+        ecode = Convert.ToInt32(User.Identity.Name);
         List<dynamic> rRIL = new List<dynamic>();
         if (!IsPostBack)
         {
@@ -170,7 +172,13 @@ public partial class DEpendingRequest : System.Web.UI.Page
             System.Diagnostics.Debug.WriteLine("False");
         }
     }
-    
+
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        //GridView1.PageIndex = e.NewPageIndex;
+        //BindData();
+    }
 }
 public static class MessageBox
 {

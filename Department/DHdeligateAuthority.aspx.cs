@@ -2,25 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class DHdeligateAuthority : System.Web.UI.Page
 {
-    string id;
     static int headcode;
-
     DHserviceManager d = new DHserviceManager();
 
     static bool button1_was_clicked = false;
     static bool button2_was_clicked = false;
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
+        IIdentity id = User.Identity;
+        headcode = Convert.ToInt32(User.Identity.Name);
+        if (!IsPostBack)
         {
-            id = Request.QueryString["id"];
-            headcode = 1008;
             Calendar1.Visible = false;
             Calendar3.Visible = false;
             List<Employee> elist = new List<Employee>();
@@ -28,9 +27,7 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
             DropDownList1.DataSource = elist;
             DropDownList1.DataTextField = "employeename";
             DropDownList1.DataValueField = "employeecode";
-            DropDownList1.DataBind(); 
-
-
+            DropDownList1.DataBind();
         }
     }
 

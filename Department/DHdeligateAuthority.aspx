@@ -15,9 +15,9 @@
      ErrorMessage="Start date must be earlier than end date"
      type="Date" setfocusonerror="true" Operator="GreaterThanEqual" 
      text="Start date must be earlier than finish date" ForeColor="Red"></asp:CompareValidator></td>
-    <td style="width: 160px; height: 20px;">&nbsp;</td>
-    <td style="width: 67px; height: 20px;">&nbsp;</td>
-    <td style="width: 51px; height: 20px;">&nbsp;</td>
+    <td style="width: 160px; height: 20px;"></td>
+    <td style="width: 67px; height: 20px;"></td>
+    <td style="width: 51px; height: 20px;"></td>
   </tr>
   <tr>
     <td style="width: 349px; height: 20px;">

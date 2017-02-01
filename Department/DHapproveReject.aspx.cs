@@ -3,23 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class DHapproveReject : System.Web.UI.Page
 {
-    string id;
     static int headcode;
-
     DHserviceManager d = new DHserviceManager();
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        headcode = Convert.ToInt32(User.Identity.Name);
         if (!IsPostBack)
         {
-            id = Request.QueryString["id"];
-            headcode = 1000;
             List<Requisition> r = d.DHgetRequestionItems(headcode);
             List<dynamic> item = new List<dynamic>();
             List<dynamic> items = new List<dynamic>();

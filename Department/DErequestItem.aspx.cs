@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,8 +13,8 @@ public partial class DErequestItem : System.Web.UI.Page
 {
     DEserviceManager eM = new DEserviceManager();
     string category;
-    string id = " ";
-    int ecode = 1002;
+    string idString = " ";
+    int ecode;
     int itemsadded;
     List<String> idesc;
     List<String> icode;
@@ -22,13 +23,13 @@ public partial class DErequestItem : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-
+        IIdentity id = User.Identity;
+        ecode = Convert.ToInt32(User.Identity.Name);
 
         if (!IsPostBack)
         {
 
-            id = Request.QueryString["id"];
-            ecode = 1002;
+            idString = Request.QueryString["id"];
             loadDropDownList7();
 
 
@@ -125,6 +126,7 @@ public partial class DErequestItem : System.Web.UI.Page
                 Session["icode"] = null;
                 Session["iqty"] = null;
                 Session["iunit"] = null;
+                Label1.Text = "Items submitted!";
                 System.Diagnostics.Debug.WriteLine("Submitted");
                 //to test email uncomment out line below
 
