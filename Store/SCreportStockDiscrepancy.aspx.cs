@@ -59,15 +59,32 @@ public partial class SCreportStockDiscrepancy : System.Web.UI.Page
         ait.itemcode = DropDownList1.SelectedValue;
         ait.quantity = Convert.ToInt32(TextBox4.Text);
         ait.reason = TextBox5.Text;
-    
-        alist.Add(ait);
+
+        bool isinalist = false;
+        foreach (AdjustmentItem ai in avoucher.AdjustmentItems)
+        {
+            if (ai.itemcode == ait.itemcode)
+            {
+                isinalist = true;
+                break;
+            }
+        }
+        if (!isinalist)
+        {
+            alist.Add(ait);
+            avoucher.AdjustmentItems.Add(ait);
+        }
+        else
+        {
+            AdjustmentItem ai = avoucher.AdjustmentItems.Where(x => x.itemcode == ait.itemcode).First();
+            ai.quantity = ai.quantity + ait.quantity;
+        }
         GridView1.DataSource = alist;
         GridView1.DataBind();
-
-
         double price = scService.getTenderQuotationByKey(DropDownList2.SelectedValue, DropDownList1.SelectedValue).price;
         cost = cost + price * Convert.ToInt32(TextBox4.Text);
-        avoucher.AdjustmentItems.Add(ait);
+        TextBox4.Text = "";
+        TextBox5.Text = "";
     }
 
     protected void Report_Click(object sender, EventArgs e)
@@ -78,7 +95,20 @@ public partial class SCreportStockDiscrepancy : System.Web.UI.Page
         avoucher.clerkcode = 1026;
 
         scService.adjustItem(avoucher);
+        GridView1.DataSource = null;
+        GridView1.DataBind();
+        TextBox1.Text = "";
+        TextBox2.Text = "";
+        TextBox3.Text = "";
+        TextBox4.Text = "";
+        TextBox5.Text = "";
+        Response.Write("<script>alert('Adjustment sent.');</script>");
     }
 
-   
+
+
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+
+    }
 }

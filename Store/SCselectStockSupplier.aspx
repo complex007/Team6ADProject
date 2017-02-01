@@ -4,19 +4,22 @@
     <center><h1>Select Stock Card</h1></center>
     <table style="width: 41%; z-index: 1; height: 60px; position: absolute; top: 141px; left: 201px;">
         <tr>
-            <td>&nbsp;<label>Item Code</label></td>      
-            <td>&nbsp;<asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList></td>         
+            <td>&nbsp;<label>Item Code</label></td>
+            <td>&nbsp;<asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList></td>         
         </tr>
          <tr>
-            <td>&nbsp;<label>Supplier 1</label></td>      
+            <td>&nbsp;<label>Supplier 1</label></td>
+             <td>&nbsp;<label>Current: </label>&nbsp;<asp:Label ID="Label1" runat="server" Text=""></asp:Label></td>
             <td>&nbsp;<asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList></td>         
         </tr>
          <tr>
-            <td>&nbsp;<label>Supplier 2</label></td>      
+            <td>&nbsp;<label>Supplier 2</label></td>
+             <td>&nbsp;<label>Current: </label>&nbsp;<asp:Label ID="Label2" runat="server" Text=""></asp:Label></td>
             <td>&nbsp;<asp:DropDownList ID="DropDownList3" runat="server"></asp:DropDownList></td>         
         </tr>
          <tr>
-            <td>&nbsp;<label>Supplier 3</label></td>      
+            <td>&nbsp;<label>Supplier 3</label></td>
+             <td>&nbsp;<label>Current: </label>&nbsp;<asp:Label ID="Label3" runat="server" Text=""></asp:Label></td>
             <td>&nbsp;<asp:DropDownList ID="DropDownList4" runat="server"></asp:DropDownList>
              </td>         
         </tr>

@@ -6,13 +6,17 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using Model;
+using System.Security.Principal;
 
 public partial class SCDeliverOrders : System.Web.UI.Page
 {
-     
+
     SCserviceManager sc = new SCserviceManager();
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         if (!IsPostBack)
         {
             DropDownList3.DataBind();
@@ -65,16 +69,16 @@ public partial class SCDeliverOrders : System.Web.UI.Page
         }
         if (GridView1.Rows.Count != 0)
         {
-     
+
 
 
             //getallocations();
-     
+
             GridView1.HeaderRow.Cells[4].Visible = false;
 
             for (int i = 0; i < GridView1.Rows.Count; i++)
             {
-           
+
                 GridView1.Rows[i].Cells[4].Visible = false;
             }
 
@@ -118,7 +122,7 @@ public partial class SCDeliverOrders : System.Web.UI.Page
             ddlCountries.Items.Insert(0, new ListItem("select"));
 
             // Select the Country of Customer in DropDownList
-          
+
         }
     }
 
@@ -140,7 +144,7 @@ public partial class SCDeliverOrders : System.Web.UI.Page
             List<dynamic> disitem = sc.getdisbursementitems(i).ToList();
             disbursementitems.AddRange(disitem);
         }
-     
+
         GridView1.DataSource = disbursementitems;
         GridView1.DataBind();
 
@@ -163,13 +167,13 @@ public partial class SCDeliverOrders : System.Web.UI.Page
 
 
     }
- 
-       
 
-    
+
+
+
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-       
+
     }
 
     protected void DropDownList4_SelectedIndexChanged(object sender, EventArgs e)
@@ -192,7 +196,7 @@ public partial class SCDeliverOrders : System.Web.UI.Page
         }
         GridView1.DataSource = disitems;
         GridView1.DataBind();
-       
+
 
 
 
@@ -205,25 +209,25 @@ public partial class SCDeliverOrders : System.Web.UI.Page
         List<RequisitionItem> rlist = new List<RequisitionItem>();
         List<Requisition> reqlist = new List<Requisition>();
         string deptcode;
-        deptcode= RadioButtonList1.SelectedValue;
+        deptcode = RadioButtonList1.SelectedValue;
         int approvercode = sc.getrepresentativecode(deptcode);
         // deptcode=sc.getdepartmentcode(deptname);
         rlist = sc.getrequisitions(deptcode);
         reqlist = sc.getreq(deptcode);
 
         int allocated;
-       
 
-        
-        for(int i = 0; i < GridView1.Rows.Count; i++)
+
+
+        for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             String suppliercode = "";
-            TenderQuotation price=new TenderQuotation();
+            TenderQuotation price = new TenderQuotation();
             GridViewRow row = GridView1.Rows[i];
             String itemcode = GridView1.Rows[i].Cells[0].Text;
             TextBox tx = (TextBox)row.FindControl("Textfrom");
             allocated = Convert.ToInt32(GridView1.Rows[i].Cells[2].Text);
-            actualqty=tx.Text;
+            actualqty = tx.Text;
             DropDownList supplier = (row.FindControl("MyDD") as DropDownList);
             if (!supplier.SelectedItem.Text.Equals("select"))
             {
@@ -231,24 +235,24 @@ public partial class SCDeliverOrders : System.Web.UI.Page
                 price = sc.getprice(suppliercode, itemcode);
             }
             int actualquantity = Convert.ToInt32(actualqty);
-          
-            int disbursementid =Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
+
+            int disbursementid = Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
             if (allocated == actualquantity)
             {
-              
+
                 for (int j = 0; j < rlist.Count; j++)
                 {
                     if (rlist[j].itemcode == itemcode)
                     {
-                        sc.updatestatusto3(rlist[j].requisitionid,itemcode);
-                        sc.updatedisbursement(disbursementid,itemcode,actualquantity);
+                        sc.updatestatusto3(rlist[j].requisitionid, itemcode);
+                        sc.updatedisbursement(disbursementid, itemcode, actualquantity);
                     }
                 }
 
             }
-           else if (allocated != actualquantity)
+            else if (allocated != actualquantity)
             {
-               sc.addadjustmentvoucher(price.price, 1025,itemcode,allocated-actualquantity);
+                sc.addadjustmentvoucher(price.price, role, itemcode, allocated - actualquantity);
                 for (int j = 0; j < rlist.Count; j++)
                 {
                     if (rlist[j].itemcode == itemcode)
@@ -259,17 +263,17 @@ public partial class SCDeliverOrders : System.Web.UI.Page
                 }
             }
         }
-        for (int z=0;z<reqlist.Count;z++)
+        for (int z = 0; z < reqlist.Count; z++)
         {
             int reqcount = sc.getreqcount(reqlist[z].requisitionid);
             int statuscount = sc.getstatuscount(reqlist[z].requisitionid);
-            if(reqcount==statuscount)
+            if (reqcount == statuscount)
             {
-                sc.updaterequisition(reqlist[z].requisitionid,approvercode);
+                sc.updaterequisition(reqlist[z].requisitionid, approvercode);
             }
 
         }
-         sc.updatedisb(deptcode);
+        sc.updatedisb(deptcode);
 
         List<int> dis = sc.getdis(RadioButtonList1.SelectedValue);
         List<dynamic> disitems = new List<dynamic>();
@@ -286,7 +290,7 @@ public partial class SCDeliverOrders : System.Web.UI.Page
 
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {
-      
+
     }
 
     protected void GridView1_SelectedIndexChanged1(object sender, EventArgs e)

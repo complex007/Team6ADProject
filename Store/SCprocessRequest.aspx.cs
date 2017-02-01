@@ -52,7 +52,7 @@ public partial class SCprocessRequest : System.Web.UI.Page
                 {
                     foreach (String i in unique)
                     {
-                        req = sc.getrequestdept(i).ToList();
+                        req = sc.getrequestdeptstatus(i).ToList();
                         request.AddRange(req);
                     }
                     Label1.Text = "New Request";
@@ -65,7 +65,7 @@ public partial class SCprocessRequest : System.Web.UI.Page
             {
                 foreach (String i in unique)
                 {
-                    req = sc.getrequestdept(i).ToList();
+                    req = sc.getrequestdeptstatus(i).ToList();
                     request.AddRange(req);
                 }
                 Label1.Text = "New Request";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -8,22 +9,25 @@ using System.Web.UI.WebControls;
 public partial class SCreceiveOrderfromSupplier : System.Web.UI.Page
 {
     SCserviceManager sc = new SCserviceManager();
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
-        { 
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
+        if (!IsPostBack)
+        {
             DropDownList2.DataBind();
             DropDownList2.SelectedIndex = 0;
             List<int> purchaseid = sc.getpurchaseid(DropDownList2.SelectedItem.Text);
             List<dynamic> items = new List<dynamic>();
             foreach (int i in purchaseid)
             {
-            List<dynamic> item = sc.getorderdetails(i).ToList();
+                List<dynamic> item = sc.getorderdetails(i).ToList();
                 items.AddRange(item);
 
             }
-        GridView1.DataSource = items;
-        GridView1.DataBind();
+            GridView1.DataSource = items;
+            GridView1.DataBind();
             if (GridView1.Rows.Count == 0)
             {
                 Label3.Text = "No order to receive";
@@ -51,7 +55,7 @@ public partial class SCreceiveOrderfromSupplier : System.Web.UI.Page
         {
             Label3.Text = "No order to receive";
         }
-        if(GridView1.Rows.Count>0)
+        if (GridView1.Rows.Count > 0)
         {
             Label3.Visible = false;
         }
@@ -65,9 +69,9 @@ public partial class SCreceiveOrderfromSupplier : System.Web.UI.Page
             GridViewRow row = GridView1.Rows[i];
             int purchaseid = Convert.ToInt32(GridView1.Rows[i].Cells[0].Text);
             TextBox remarkstextbox = (TextBox)row.FindControl("TextRemarks");
-            if(remarkstextbox.Text!="")
+            if (remarkstextbox.Text != "")
             {
-               remarks = remarkstextbox.Text;
+                remarks = remarkstextbox.Text;
             }
             else
             {
@@ -76,7 +80,7 @@ public partial class SCreceiveOrderfromSupplier : System.Web.UI.Page
             String itemcode = GridView1.Rows[i].Cells[1].Text;
             sc.updateorderitems(purchaseid, itemcode, remarks);
             String deliverno = TextBox1.Text;
-            sc.updatesorder(purchaseid, 1025,deliverno);
+            sc.updatesorder(purchaseid, role, deliverno);
         }
         Response.Write("<script>alert('Receive Sucessfull');</script>");
         List<int> purchase = sc.getpurchaseid(DropDownList2.SelectedItem.Text);
@@ -89,7 +93,7 @@ public partial class SCreceiveOrderfromSupplier : System.Web.UI.Page
         }
         GridView1.DataSource = items;
         GridView1.DataBind();
-        if(GridView1.Rows.Count==0)
+        if (GridView1.Rows.Count == 0)
         {
             Label3.Text = "No order to receive";
         }

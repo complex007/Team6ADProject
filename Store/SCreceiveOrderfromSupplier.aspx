@@ -5,7 +5,7 @@
     <asp:Label ID="Label1" runat="server" style="z-index: 1; position: absolute; top: 80px; left: 176px" Text="Supplier"></asp:Label>
     <asp:DropDownList ID="DropDownList2" runat="server" style="z-index: 1; position: absolute; top: 79px; left: 270px" DataSourceID="SqlDataSource1" DataTextField="suppliercode" DataValueField="suppliercode" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged" AutoPostBack="True">
     </asp:DropDownList>
-    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:team6adprojectdbConnectionString2 %>" SelectCommand="SELECT [suppliercode] FROM [Supplier]"></asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:team6adprojectdbConnectionString %>" SelectCommand="SELECT [suppliercode] FROM [Supplier]"></asp:SqlDataSource>
     <asp:Label ID="Label3" runat="server" style="z-index: 1; position: absolute; top: 174px; left: 335px" Text="Label"></asp:Label>
     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Please Key in Delivery Order Number" ForeColor="Red" style="z-index: 1; position: absolute; top: 134px; left: 446px" ValidationGroup="vg"></asp:RequiredFieldValidator>
     <asp:TextBox ID="TextBox1" runat="server" style="z-index: 1; position: absolute; top: 132px; left: 268px" ValidationGroup="vg"></asp:TextBox>

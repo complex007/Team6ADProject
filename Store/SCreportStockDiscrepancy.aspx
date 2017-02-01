@@ -45,11 +45,13 @@
     
     <asp:Button ID="Add" runat="server" style="z-index: 1; position: absolute; top: 711px; left: 451px; width: 65px; height: 26px;" Text="Add" OnClick="Add_Click" />
       <asp:Button ID="Report" runat="server" style="z-index: 1; position: absolute; top: 712px; left: 675px; height: 25px;" Text="Report" OnClick="Report_Click" />
-    <asp:GridView ID="GridView1" runat="server" style="z-index: 1; width: 187px; height: 127px; position: absolute; top: 802px; left: 468px" AutoGenerateColumns="False" >
+    <asp:GridView ID="GridView1" runat="server" style="z-index: 1; width: 187px; height: 127px; position: absolute; top: 802px; left: 468px" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand" >
         <Columns>
            <asp:BoundField DataField = "itemcode" HeaderText = "itemcode" SortExpression="itemcode" />
            <asp:BoundField DataField = "quantity" HeaderText = "quantity" SortExpression="quantity" />
            <asp:BoundField DataField = "reason" HeaderText = "reason" SortExpression="reason" />
+     
+            <asp:ButtonField CommandName="Delete" Text="Remove" />
      
        </Columns>
     </asp:GridView>
