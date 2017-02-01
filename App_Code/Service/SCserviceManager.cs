@@ -354,64 +354,18 @@ public class SCserviceManager
      ).ToList();
         return listDistinct;
     }
-    public IEnumerable<dynamic> getrequestdept(String item)
+    public List<dynamic> getrequestdeptstatus(string item)
     {
+        List<dynamic> list = StoreDepartmentDAO.getrequestdept(item).ToList();
 
-        //List<int> dept = new List<int>();
-        //dept = sce.RequisitionItems.Where(x => x.itemcode==item).Select(y=> y.requisitionid).ToList();
-        //return dept;
-
-
-        var req = (from p in sce.RequisitionItems.Where(x => x.itemcode == item && x.status == 0 && x.Item.quantityonhand > 0)
-                   select new
-                   {
-
-                       BIN = p.Item.bin,
-                       Description = p.Item.itemdescription,
-                       Quantity = p.quantity,
-                       Actualqty = p.Item.quantityonhand,
-                       RequisitionID = p.Requisition.requisitionid,
-                       DepartmentName = p.Requisition.Department.deptname,
-                       deptneeded = p.quantity,
-                       Allocated = "",
-                       Itemcode = p.itemcode
-                   }).ToList();
-
-
-        return req;
-
-
-
+        return list;
     }
 
-    public IEnumerable<dynamic> getrequestdeptstatus2(String item)
+    public List<dynamic> getrequestdeptstatus2(string item)
     {
+        List<dynamic> list = StoreDepartmentDAO.getrequestdeptstatus2(item).ToList();
 
-        //List<int> dept = new List<int>();
-        //dept = sce.RequisitionItems.Where(x => x.itemcode==item).Select(y=> y.requisitionid).ToList();
-        //return dept;
-
-
-        var req = (from p in sce.RequisitionItems.Where(x => x.itemcode == item && x.status == 2 && x.Item.quantityonhand > 0)
-                   select new
-                   {
-
-                       BIN = p.Item.bin,
-                       Description = p.Item.itemdescription,
-                       Quantity = p.quantity,
-                       Actualqty = p.Item.quantityonhand,
-                       RequisitionID = p.Requisition.requisitionid,
-                       DepartmentName = p.Requisition.Department.deptname,
-                       deptneeded = p.quantity,
-                       Allocated = "",
-                       p.itemcode
-                   }).ToList();
-
-
-        return req;
-
-
-
+        return list;
     }
 
     public Item getsuppliercode(string itemcode)

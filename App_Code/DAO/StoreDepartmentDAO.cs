@@ -21,11 +21,11 @@ public class StoreDepartmentDAO
         foreach (string i in requestdeptcode)
         {
             string cp = ds.Departments.Where(x => x.deptcode == i).Select(y => y.collectionpoint).FirstOrDefault();
-            if(!clist.Contains(cp))
+            if (!clist.Contains(cp))
             {
                 clist.Add(cp);
             }
-           
+
         }
         return clist;
     }
@@ -105,5 +105,142 @@ public class StoreDepartmentDAO
         }
         else
             return lastUnapproved;
+    }
+
+    public static List<Requisition> findRequisitionidByStatus02()
+    {
+        List<Requisition> rlist = ds.Requisitions.Where(x => x.status == 0 || x.status == 2).ToList<Requisition>();
+        return rlist;
+    }
+    public static List<String> getuniqueitems()
+    {
+        List<String> unique = new List<String>();
+        List<String> listDistinct = new List<String>();
+        unique = ds.RequisitionItems.Where(y => y.status == 0).Select(x => x.itemcode).ToList();
+        listDistinct = unique.GroupBy(
+         i => i,
+         (key, group) => group.First()
+     ).ToList();
+        return listDistinct;
+    }
+    public static List<String> getuniqueitems2()
+    {
+        List<String> unique = new List<String>();
+        List<String> listDistinct = new List<String>();
+        unique = ds.RequisitionItems.Where(y => y.status == 2).Select(x => x.itemcode).ToList();
+        listDistinct = unique.GroupBy(
+         i => i,
+         (key, group) => group.First()
+     ).ToList();
+        return listDistinct;
+    }
+    public static IEnumerable<dynamic> getrequestdept(String item)
+    {
+
+        //List<int> dept = new List<int>();
+        //dept = sce.RequisitionItems.Where(x => x.itemcode==item).Select(y=> y.requisitionid).ToList();
+        //return dept;
+
+
+        var req = (from p in ds.RequisitionItems.Where(x => x.itemcode == item && x.status == 0 && x.Item.quantityonhand > 0)
+                   select new
+                   {
+
+                       BIN = p.Item.bin,
+                       Description = p.Item.itemdescription,
+                       Quantity = p.quantity,
+                       Actualqty = p.Item.quantityonhand,
+                       RequisitionID = p.Requisition.requisitionid,
+                       DepartmentName = p.Requisition.Department.deptname,
+                       deptneeded = p.quantity,
+                       Allocated = "",
+                       p.itemcode
+                   }).ToList();
+
+
+        return req;
+
+
+
+    }
+
+    public static IEnumerable<dynamic> getrequestdeptstatus2(String item)
+    {
+
+        //List<int> dept = new List<int>();
+        //dept = sce.RequisitionItems.Where(x => x.itemcode==item).Select(y=> y.requisitionid).ToList();
+        //return dept;
+
+
+        var req = (from p in ds.RequisitionItems.Where(x => x.itemcode == item && x.status == 2 && x.Item.quantityonhand > 0)
+                   select new
+                   {
+
+                       BIN = p.Item.bin,
+                       Description = p.Item.itemdescription,
+                       Quantity = p.quantity,
+                       Actualqty = p.Item.quantityonhand,
+                       RequisitionID = p.Requisition.requisitionid,
+                       DepartmentName = p.Requisition.Department.deptname,
+                       deptneeded = p.quantity,
+                       Allocated = "",
+                       p.itemcode
+                   }).ToList();
+
+
+        return req;
+    }
+    public static Disbursement addtodisbursement(Disbursement disb)
+    {
+        Disbursement disbursement = findunapproveddisbursement().Where(x => x.deptcode == disb.deptcode && x.representativecode == disb.representativecode).LastOrDefault();
+        if (disbursement == null)
+        {
+            ds.Disbursements.Add(disb);
+            ds.SaveChanges();
+            Disbursement disbid = ds.Disbursements.OrderByDescending(x => x.disbursementid).First();
+            return disbid;
+        }
+        else
+        {
+            return disbursement;
+        }
+    }
+    public static List<Disbursement> findunapproveddisbursement()
+    {
+        List<Disbursement> orders = new List<Disbursement>();
+        orders = ds.Disbursements.Where(x => x.collectiondate == null).Select(y => y).ToList<Disbursement>();
+        return orders;
+    }
+    public static void addtodisbursementitem(Disbursement disb, DisbursementItem disbitem)
+    {
+        if (disb.DisbursementItems.Where(x => x.disbursementid == disbitem.disbursementid && x.itemcode == disbitem.itemcode).Count() == 0)
+        {
+            ds.DisbursementItems.Add(disbitem);
+            ds.SaveChanges();
+        }
+        else
+        {
+            if (disb.DisbursementItems.Where(x => x.disbursementid == disbitem.disbursementid && x.itemcode == disbitem.itemcode && x.actualquantity == null).Count() != 0)
+            {
+                DisbursementItem disbursementitem = disb.DisbursementItems.Where(x => x.disbursementid == disbitem.disbursementid && x.itemcode == disbitem.itemcode && x.actualquantity == null).First();
+                disbursementitem.allocatedquantity = disbursementitem.allocatedquantity + disbitem.allocatedquantity;
+                ds.SaveChanges();
+            }
+        }
+    }
+    public static string getdepartmentcode(string d)
+    {
+        string dcode;
+        Department d1 = ds.Departments.Where(x => x.deptname == d).First();
+        dcode = d1.deptcode;
+        return dcode;
+    }
+    public static int getrepresentativecode(string dcode)
+    {
+        int repcode;
+        Employee e = ds.Employees.Where(x => x.deptcode == dcode && x.role == "departmentrepresentative").First();
+        repcode = e.employeecode;
+        return repcode;
+
     }
 }

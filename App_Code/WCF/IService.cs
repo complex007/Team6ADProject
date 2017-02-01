@@ -1004,6 +1004,197 @@ public class WCFEmployee
         }
     }
 }
+[DataContract]
+public class WCFLogin
+{
+    string username;
+    string password;
+    string token;
+    [DataMember]
+    public string Username
+    {
+        get
+        {
+            return username;
+        }
+
+        set
+        {
+            username = value;
+        }
+    }
+    [DataMember]
+    public string Password
+    {
+        get
+        {
+            return password;
+        }
+
+        set
+        {
+            password = value;
+        }
+    }
+    [DataMember]
+    public string Token
+    {
+        get
+        {
+            return token;
+        }
+
+        set
+        {
+            token = value;
+        }
+    }
+
+    public static WCFLogin Make(string username, string password, string token)
+    {
+        WCFLogin item = new WCFLogin();
+        item.Username = username;
+        item.Password = password;
+        item.Token = token;
+        return item;
+    }
+
+
+
+
+}
+
+[DataContract]
+public class WCFRequestDept
+{
+    string bin;
+    string itemdescription;
+    int quantityonhand;
+    int requisitionid;
+    string deptname;
+    int deptneededquantity;
+    int allocatedquantity;
+    string itemcode;
+    [DataMember]
+    public string Bin
+    {
+        get
+        {
+            return bin;
+        }
+
+        set
+        {
+            bin = value;
+        }
+    }
+    [DataMember]
+    public string Itemdescription
+    {
+        get
+        {
+            return itemdescription;
+        }
+
+        set
+        {
+            itemdescription = value;
+        }
+    }
+    [DataMember]
+    public int Quantityonhand
+    {
+        get
+        {
+            return quantityonhand;
+        }
+
+        set
+        {
+            quantityonhand = value;
+        }
+    }
+    [DataMember]
+    public int Requisitionid
+    {
+        get
+        {
+            return requisitionid;
+        }
+
+        set
+        {
+            requisitionid = value;
+        }
+    }
+    [DataMember]
+    public string Deptname
+    {
+        get
+        {
+            return deptname;
+        }
+
+        set
+        {
+            deptname = value;
+        }
+    }
+    [DataMember]
+    public int Deptneededquantity
+    {
+        get
+        {
+            return deptneededquantity;
+        }
+
+        set
+        {
+            deptneededquantity = value;
+        }
+    }
+    [DataMember]
+    public int Allocatedquantity
+    {
+        get
+        {
+            return allocatedquantity;
+        }
+
+        set
+        {
+            allocatedquantity = value;
+        }
+    }
+    [DataMember]
+    public string Itemcode
+    {
+        get
+        {
+            return itemcode;
+        }
+
+        set
+        {
+            itemcode = value;
+        }
+    }
+
+    public static WCFRequestDept Make(string bin, string itemdescription, int quantityonhand, int requisitionid, string deptname, int deptneededquantity, int allocatedquantity, string itemcode)
+    {
+        WCFRequestDept de = new WCFRequestDept();
+        de.Bin = bin;
+        de.Itemdescription = itemdescription;
+        de.Quantityonhand = quantityonhand;
+        de.Requisitionid = requisitionid;
+        de.Deptname = deptname;
+        de.Deptneededquantity = deptneededquantity;
+        de.Allocatedquantity = allocatedquantity;
+        de.Itemcode = itemcode;
+        return de;
+
+    }
+}
 
 
 

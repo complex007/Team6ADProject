@@ -13,6 +13,7 @@ public class Service1 : IService
 {
     SCserviceManager scmanager = new SCserviceManager();
     DHserviceManager dhmanager = new DHserviceManager();
+    AuthserviceManager amanager = new AuthserviceManager();
     public string[] listDeliverCollectionPoint()
     {
         string[] cols = scmanager.listDeliverCollectionPoint();
@@ -152,6 +153,107 @@ public class Service1 : IService
         Employee current = dhmanager.getDepartmentRepresentative(head);
         WCFEmployee wcfcurrent = WCFEmployee.Make(current.employeecode, current.employeename, current.employeeemail, current.deptcode, current.role, current.del);
         return wcfcurrent;
+    }
+    public WCFEmployee Login(WCFLogin login)
+    {
+        Employee e = amanager.findEmployeeByName(login.Username);
+        WCFEmployee wcfe = WCFEmployee.Make(e.employeecode, e.employeename, e.employeeemail, e.deptcode, e.role, e.del);
+        return wcfe;
+    }
+    public string[] getuniqueitems()
+    {
+        string[] list = scmanager.getuniqueitems().ToArray<string>();
+        return list;
+
+    }
+    public string[] getuniqueitems2()
+    {
+        string[] list = scmanager.getuniqueitems2().ToArray<string>();
+        return list;
+    }
+    public List<WCFRequestDept> getrequestdeptstatus(string item)
+    {
+        IEnumerable<dynamic> rdlist = scmanager.getrequestdeptstatus(item);
+        List<WCFRequestDept> redelist = getrequestdept(rdlist.ToList());
+        return redelist;
+
+    }
+    public List<WCFRequestDept> getrequestdeptstatus2(string item)
+    {
+        List<dynamic> rdlist = scmanager.getrequestdeptstatus2(item);
+        List<WCFRequestDept> redelist = getrequestdept(rdlist);
+
+        return redelist;
+    }
+    public List<WCFRequestDept> getrequestdept(List<dynamic> rdlist)
+    {
+        List<WCFRequestDept> redelist = new List<WCFRequestDept>();
+        int available = 0;
+        List<int> requested = new List<int>();
+
+        foreach (dynamic i in rdlist)
+        {
+
+            string itemdescription = i.Description;
+            int quantityonhand = i.Actualqty;
+            int requisitionid = i.RequisitionID;
+            string deptname = i.DepartmentName;
+            int deptneededquantity = i.deptneeded;
+            int allocatedquantity = 0;
+            string itemcode = i.itemcode;
+            string bin = i.BIN;
+
+            WCFRequestDept deitem = WCFRequestDept.Make(bin, itemdescription, quantityonhand, requisitionid, deptname, deptneededquantity, allocatedquantity, itemcode);
+            redelist.Add(deitem);
+            available = quantityonhand;
+
+        }
+        for (int j = 0; j < redelist.Count; j++)
+        {
+            for (int n = j + 1; n < redelist.Count; n++)
+            {
+                if (redelist[j].Deptname == redelist[n].Deptname)
+                {
+                    if (redelist[j].Requisitionid < redelist[n].Requisitionid)
+                    {
+                        redelist[j].Deptneededquantity += redelist[n].Deptneededquantity;
+                        redelist.Remove(redelist[n]);
+                    }
+                }
+            }
+        }
+
+        foreach (WCFRequestDept it in redelist)
+        {
+            requested.Add(it.Deptneededquantity);
+        }
+
+        List<int> allocatedlist = scmanager.recommendDistribution(available, requested);
+        for (int i = 0; i < allocatedlist.Count; i++)
+        {
+            redelist[i].Allocatedquantity = allocatedlist[i];
+        }
+
+        return redelist;
+    }
+    public void sendRequestDepts(List<WCFRequestDept> rdlist)
+    {
+        foreach (WCFRequestDept i in rdlist)
+        {
+            string deptname = i.Deptname;
+            string deptcode = scmanager.getdepartmentcode(deptname);
+            int recode = scmanager.getrepresentativecode(deptcode);
+            Disbursement disburse = new Disbursement();
+            disburse.deptcode = deptcode;
+            disburse.representativecode = recode;
+            Disbursement newdisburse = scmanager.addtodisbursement(disburse);
+            int id = newdisburse.disbursementid;
+            DisbursementItem disburseitem = new DisbursementItem();
+            disburseitem.disbursementid = id;
+            disburseitem.itemcode = i.Itemcode;
+            disburseitem.allocatedquantity = i.Allocatedquantity;
+            scmanager.addtodisbursementitem(disburse, disburseitem);
+        }
     }
 }
 
