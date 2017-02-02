@@ -3,26 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
-
-public class DepartmentDAO
+public static class DepartmentDAO
 {
-    team6adprojectdbEntities ctx = new team6adprojectdbEntities();
+    static team6adprojectdbEntities ctx = new team6adprojectdbEntities();
 
-    public DepartmentDAO()
+    public static Department findDepartmentById(string dept)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        return ctx.Departments.Find(dept);
     }
-    public List<Item> PopulateCatDropDownList(string category)
+    public static List<Item> PopulateCatDropDownList(string category)
     {
         List<Item> Ilist = new List<Item>();
         Ilist = ctx.Items.Where(x => x.category == category).ToList();
 
         return Ilist;
     }
-    public void submitRequisitionItemList(List<String> qty, List<String> itemcode, int empcode)
+    public static void submitRequisitionItemList(List<String> qty, List<String> itemcode, int empcode)
     {
         try
         {
@@ -65,7 +63,7 @@ public class DepartmentDAO
             System.Diagnostics.Debug.Write("contact administrator for error: " + e);
         }
     }
-    public List<dynamic> retreiveRequistionsItems(int empcode)
+    public static List<dynamic> retreiveRequistionsItems(int empcode)
     {
         List<dynamic> ridItemListDesc = new List<dynamic>();
         try
@@ -102,7 +100,7 @@ public class DepartmentDAO
 
         return ridItemListDesc;
     }
-    public void updateRequistionsItems(string itemcode, string qty, string reqid, string orgqty)
+    public static void updateRequistionsItems(string itemcode, string qty, string reqid, string orgqty)
     {
         try
         {
@@ -126,7 +124,7 @@ public class DepartmentDAO
             System.Diagnostics.Debug.Write("contact administrator for error: " + e);
         }
     }
-    public void deleteRequistionsItems(string itemcode, string qty, string reqid, int empcode)
+    public static void deleteRequistionsItems(string itemcode, string qty, string reqid, int empcode)
     {
         try
         {
@@ -160,14 +158,14 @@ public class DepartmentDAO
             System.Diagnostics.Debug.Write("contact administrator for error: " + e);
         }
     }
-    public string getUnit(string itemcode)
+    public static string getUnit(string itemcode)
     {
         string itemunit = "";
         itemunit = ctx.Items.Where(x => x.itemcode == itemcode).Select(l => l.unitofmeasure).First();
 
         return itemunit;
     }
-    public Department DRfindCurrentCollectionPoint(int id)
+    public static Department DRfindCurrentCollectionPoint(int id)
     {
         //  string CollectionPoint;
         Department d1 = new Department();
@@ -177,7 +175,7 @@ public class DepartmentDAO
         d1 = ctx.Departments.Where(x => x.deptcode == deptcode).First();
         return d1;
     }
-    public void DRupdateCollectionPoint(string Cpoint, int repcode)
+    public static void DRupdateCollectionPoint(string Cpoint, int repcode)
     {
         try
         {
@@ -196,7 +194,7 @@ public class DepartmentDAO
             errormessage("contact administrator for error: " + e);
         }
     }
-    public Department DHfindCurrentCollectionPoint(int id)
+    public static Department DHfindCurrentCollectionPoint(int id)
     {
         Department d1 = new Department();
         Employee e1 = ctx.Employees.Where(x => x.employeecode == id).First();
@@ -204,7 +202,7 @@ public class DepartmentDAO
         d1 = ctx.Departments.Where(x => x.deptcode == deptcode).First();
         return d1;
     }
-    public void DHupdateCollectionPoint(string Cpoint, int headcode)
+    public static void DHupdateCollectionPoint(string Cpoint, int headcode)
     {
         try
         {
@@ -223,7 +221,7 @@ public class DepartmentDAO
             errormessage("contact administrator for error: " + e);
         }
     }
-    public Employee getDepartmentRepresentative(int headcode)
+    public static Employee getDepartmentRepresentative(int headcode)
     {
         string dept;
 
@@ -232,12 +230,12 @@ public class DepartmentDAO
         Employee e2 = ctx.Employees.Where(x => x.deptcode == dept && x.role == "departmentrepresentative").First();
         return e2;
     }
-    public Employee getDepartmentRepresentativeByDept(string dept)
+    public static Employee getDepartmentRepresentativeByDept(string dept)
     {
         Employee e = ctx.Employees.Where(x => x.deptcode == dept && x.role == "departmentrepresentative").FirstOrDefault();
         return e;
     }
-    public List<Employee> PopulateEmpList(int headcode)
+    public static List<Employee> PopulateEmpList(int headcode)
     {
         string dept;
 
@@ -247,7 +245,7 @@ public class DepartmentDAO
         ctx.SaveChanges();
         return Elist;
     }
-    public void setRepresentative(int empCode)
+    public static void setRepresentative(int empCode)
     {
         try
         {
@@ -264,7 +262,7 @@ public class DepartmentDAO
             errormessage("cannot set collection point because : " + e);
         }
     }
-    public void changePreviousRepresentative(int empCode)
+    public static void changePreviousRepresentative(int empCode)
     {
         try
         {
@@ -281,7 +279,7 @@ public class DepartmentDAO
             errormessage("contact admin. error message: " + e);
         }
     }
-    public List<Requisition> DHgetRequestionItems(int headcode)
+    public static List<Requisition> DHgetRequestionItems(int headcode)
     {
         string dept;
 
@@ -291,13 +289,13 @@ public class DepartmentDAO
         rl = ctx.Requisitions.Where(x => x.deptcode == dept && x.approvercode == null && x.approvaldate == null).ToList();
         return rl;
     }
-    public IEnumerable<dynamic> getItems(int reqid)
+    public static IEnumerable<dynamic> getItems(int reqid)
     {
 
         var rlist = ctx.RequisitionItems.Where(x => x.requisitionid == reqid).Select(x => new { x.requisitionid, x.Item.itemdescription, x.quantity }).ToList();
         return rlist;
     }
-    public void approve(int id, int headcode)
+    public static void approveRequisition(int id, int headcode)
     {
         try
         {
@@ -312,13 +310,13 @@ public class DepartmentDAO
             errormessage("cannot approve. contact admin for error:  " + e);
         }
     }
-    public void reject(int id)
+    public static void rejectRequisition(int id)
     {
         Requisition r = ctx.Requisitions.Where(x => x.requisitionid == id).First();
         ctx.Requisitions.Remove(r);
         ctx.SaveChanges();
     }
-    public string getEmployee(int requid)
+    public static string getEmployee(int requid)
     {
         int code;
         string email;
@@ -330,26 +328,23 @@ public class DepartmentDAO
         return email;
 
     }
-    public List<Employee> getAllEmployees(int headcode)
+    public static List<Employee> getAllEmployees(int headcode)
     {
         string deptcode;
 
         List<Employee> elist = new List<Employee>();
         Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "departmenthead").First();
         deptcode = e.deptcode;
-        elist = ctx.Employees.Where(x => x.deptcode == deptcode && x.role != "departmenthead").ToList();
+        elist = ctx.Employees.Where(x => x.deptcode == deptcode && x.role == "departmentemployee").ToList();
         return elist;
     }
-    public void delegateAuthority(int headcode, int ecode, DateTime from, DateTime to)
+    public static void delegateAuthority(int headcode, int ecode, DateTime from, DateTime to)
     {
         string deptcode;
         try
         {
             Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "departmenthead").First();
-            e.role = "delegatedhead";
             deptcode = e.deptcode;
-            Employee e1 = ctx.Employees.Where(x => x.employeecode == ecode).First();
-            e1.role = "delegatedemployee";
             Department d = ctx.Departments.Where(x => x.deptcode == deptcode).First();
             d.delegatecode = ecode;
             d.startdate = from;
@@ -361,27 +356,53 @@ public class DepartmentDAO
             errormessage("delegation unsuccessful. contact admin for error:  " + e);
         }
     }
-    public void retriveAuthority(int headcode)
+    public static void executeDelegation (int headcode, int ecode)
+    {
+        Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "departmenthead").First();
+        e.role = "delegatedhead";
+        string deptcode = e.deptcode;
+        Employee e1 = ctx.Employees.Where(x => x.employeecode == ecode).First();
+        e1.role = "delegatedemployee";
+        string dHeadRole = e.role;
+        if (!Roles.RoleExists(dHeadRole))
+        {
+            Roles.CreateRole(dHeadRole);
+        }
+        Roles.AddUserToRole(e.employeecode.ToString(), dHeadRole);
+        Roles.RemoveUserFromRole(e.employeecode.ToString(), "departmenthead");
+        string dEmpRole = e1.role;
+        if (!Roles.RoleExists(dEmpRole))
+        {
+            Roles.CreateRole(dEmpRole);
+        }
+        Roles.AddUserToRole(e1.employeecode.ToString(), dEmpRole);
+        Roles.RemoveUserFromRole(e.employeecode.ToString(), "departmentemployee");
+    }
+    public static void retriveAuthority(int headcode)
     {
         string deptcode;
 
-        Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "delegatedHead").First();
+        Employee e = ctx.Employees.Where(x => x.employeecode == headcode && x.role == "delegatedhead").First();
         e.role = "departmenthead";
         deptcode = e.deptcode;
-        Employee e1 = ctx.Employees.Where(x => x.role == "delegatedemployee").First();
-        e1.role = "departmentEmployee";
+        Employee e1 = ctx.Employees.Where(x => x.role == "delegatedemployee" && x.deptcode == deptcode).First();
+        e1.role = "departmentemployee";
         Department d = ctx.Departments.Where(x => x.deptcode == deptcode).First();
         d.delegatecode = null;
         d.startdate = null;
         d.enddate = null;
         ctx.SaveChanges();
 
+        Roles.AddUserToRole(e.employeecode.ToString(), "departmenthead");
+        Roles.RemoveUserFromRole(e.employeecode.ToString(), "delegatedhead");
+        Roles.AddUserToRole(e1.employeecode.ToString(), "departmentemployee");
+        Roles.RemoveUserFromRole(e.employeecode.ToString(), "delegatedemployee");
     }
-    public void errormessage(string myStringVariable)
+    public static void errormessage(string myStringVariable)
     {
         System.Diagnostics.Debug.Write(myStringVariable);
     }
-    public List<RequisitionItem> findRequisitionItemsByHead(int headcode)
+    public static List<RequisitionItem> findRequisitionItemsByHead(int headcode)
     {
         Employee head = ctx.Employees.Where(x => x.employeecode == headcode).FirstOrDefault();
         string deptcode = head.deptcode;
@@ -394,7 +415,7 @@ public class DepartmentDAO
         return ritems;
 
     }
-    public Requisition findRequisitionByRequisitionId(int requisitionid)
+    public static Requisition findRequisitionByRequisitionId(int requisitionid)
     {
         Requisition item = ctx.Requisitions.Where(x => x.requisitionid == requisitionid).FirstOrDefault();
         return item;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -33,7 +34,7 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
 
     protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
     {
-       
+
         if (Calendar1.Visible)
         {
             Calendar1.Visible = false;
@@ -46,17 +47,17 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
     }
     protected void Calendar1_SelectionChanged(object sender, EventArgs e)
     {
-      
-        
+
+
         TextBox1.Text = Calendar1.SelectedDate.ToString();
         Calendar1.Visible = false;
-       
+
     }
 
 
     protected void ImageButton3_Click(object sender, ImageClickEventArgs e)
     {
-       
+
         if (Calendar3.Visible)
         {
             Calendar3.Visible = false;
@@ -77,9 +78,9 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
 
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        
 
-            }
+
+    }
 
     protected void Button1_Click(object sender, EventArgs e)
     {
@@ -96,6 +97,11 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
                 to = Convert.ToDateTime(startdate);
                 ecode = Convert.ToInt32(DropDownList1.SelectedValue);
                 d.delegateAuthority(headcode, ecode, from, to);
+                if (from.CompareTo(DateTime.Now) <= 0)
+                {
+                    FormsAuthentication.SignOut();
+                    FormsAuthentication.RedirectToLoginPage();
+                }
             }
         }
         catch (Exception ex)
@@ -104,7 +110,7 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
             System.Diagnostics.Debug.WriteLine(ex);
         }
     }
-        
+
 }
 //public static class MessageBox1
 //{

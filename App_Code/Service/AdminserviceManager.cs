@@ -10,6 +10,10 @@ using System.Web.Security;
 /// </summary>
 public class AdminserviceManager
 {
+    public Employee FindEmployeebyID(int id)
+    {
+        return EmployeeDAO.FindEmployeebyID(id);
+    }
     public MembershipCreateStatus AddEmployeeToForms(Employee emp)
     {
         MembershipCreateStatus result = EmployeeDAO.InsertEmployeeIntoFormsAuth(emp);
