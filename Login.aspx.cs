@@ -26,11 +26,11 @@ public partial class Login : System.Web.UI.Page
             {
                 if (((DateTime)dept.enddate).CompareTo(DateTime.Now) >= 0)
                 {
-                    dm.executeDelegation(dept.deptcode);
+                    dm.executeDelegation();
                 }
                 else
                 {
-                    dm.retriveAuthority(dept.Employees.Where(x => x.role == "departmenthead").First().employeecode);
+                    dm.retrieveAuthority(dept.Employees.Where(x => x.role == "departmenthead" || x.role == "delegatedhead").First().employeecode);
                 }
             }
         }

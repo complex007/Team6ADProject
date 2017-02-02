@@ -6,10 +6,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-
-// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-// NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-public class Service1 : IService
+// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service" in code, svc and config file together.
+public class Service : IService
 {
     SCserviceManager scmanager = new SCserviceManager();
     DHserviceManager dhmanager = new DHserviceManager();
@@ -133,6 +131,14 @@ public class Service1 : IService
         dhmanager.changePreviousRepresentative(recode);
         dhmanager.setRepresentative(emcode);
     }
+
+    public WCFEmployee findCurrentRepresentative(string headid)
+    {
+        int head = Convert.ToInt32(headid);
+        Employee current = dhmanager.getDepartmentRepresentative(head);
+        WCFEmployee wcfcurrent = WCFEmployee.Make(current.employeecode, current.employeename, current.employeeemail, current.deptcode, current.role, current.del);
+        return wcfcurrent;
+    }
     public void updateCollectionPoint(string[] cpointandhecode)
     {
         string cpoint = cpointandhecode[0];
@@ -147,13 +153,7 @@ public class Service1 : IService
         string[] col = new string[] { collectionpoint };
         return col;
     }
-    public WCFEmployee findCurrentRepresentative(string headid)
-    {
-        int head = Convert.ToInt32(headid);
-        Employee current = dhmanager.getDepartmentRepresentative(head);
-        WCFEmployee wcfcurrent = WCFEmployee.Make(current.employeecode, current.employeename, current.employeeemail, current.deptcode, current.role, current.del);
-        return wcfcurrent;
-    }
+
     public WCFEmployee Login(WCFLogin login)
     {
         Employee e = amanager.findEmployeeByName(login.Username);
@@ -173,8 +173,8 @@ public class Service1 : IService
     }
     public List<WCFRequestDept> getrequestdeptstatus(string item)
     {
-        IEnumerable<dynamic> rdlist = scmanager.getrequestdeptstatus(item);
-        List<WCFRequestDept> redelist = getrequestdept(rdlist.ToList());
+        List<dynamic> rdlist = scmanager.getrequestdeptstatus(item);
+        List<WCFRequestDept> redelist = getrequestdept(rdlist);
         return redelist;
 
     }
@@ -254,6 +254,6 @@ public class Service1 : IService
             disburseitem.allocatedquantity = i.Allocatedquantity;
             scmanager.addtodisbursementitem(disburse, disburseitem);
         }
+
     }
 }
-
