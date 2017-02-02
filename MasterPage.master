@@ -5,20 +5,153 @@
 
 <html>
 <head runat="server">
-    <link href="c.css" rel="stylesheet" />
-    <link href="StyleSheet1.css" rel="stylesheet" />
+    <style>
+        .labels{
+           color:black;
+           font-weight:bold;
+           font-size:20px;
+        }
+      
+        ul{
+  display:block;
+  font:1em Tahoma, Arial, sans-serif;
+  width:250px;
+  position:relative;
+}
+/*li a{
+  list-style:none;
+  display:block;
+  margin-bottom:0.25em;
+  -webkit-transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+  -webkit-perspective: 800px;
+  background-color:dimgrey;
+  color:white;
+}
+a{
+  overflow:hidden;
+  color:#FFF;
+  text-decoration:none;
+  padding:0.5em 1em;
+  display:block;
+  background:rgba(0,0,0,0.9);
+  -moz-transition:all ease-out 0.5s;
+  -webkit-transition:all ease-out 0.5s;
+  transition:all ease-out 0.5s;
+  border-left:0 solid #3689c9;
+  &.new{
+    -webkit-transform:rotateX(810deg);
+    -moz-transform:rotateX(810deg);
+    transform:rotateX(810deg);
+  }
+        li a:hover {
+            background: rgba(0,0,0,0.7);
+            margin-left: 2em;
+            padding-left: 1em;
+            border-left: 0.5em solid #3689c9;
+            color: #3689c9;
+        }*/
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color:lightgrey;
+    
+}
+
+li a {
+     display:block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-style:double;
+   
+}
+li a:hover {
+    background-color: #555;
+    color: white;
+}
+
+/* Change the link color on hover */
+       
+
+
+.grid td,.grid th{
+    text-align:center;
+}
+/**
+ * Demo Styles
+ */
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+#grad {
+    height: 200px;
+    background: red; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(left, #c2e59c , #64b3f4); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #c2e59c , #64b3f4); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right,  #c2e59c , #64b3f4); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right,  #c2e59c , #64b3f4); /* Standard syntax (must be last) */
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+
+}
+
+.demo {
+  margin: 0 auto;
+  padding-top: 64px;
+  max-width: 640px;
+  width: 94%;
+}
+
+.demo h1 {
+  margin-top: 0;
+}
+
+/**
+ * Footer Styles
+ */
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+    </style>
     <title></title>
+     
       <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="c.css" rel="stylesheet" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <%--HEADER   --%>
-      <nav class="navbar navbar-inverse">
+      <nav class="navbar navbar-inverse" style="color:darkblue">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-user"></span> Welcome Username</a>
-    </div>
+      <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-user"></span> Welcome 
+        <asp:LoginName ID="LoginName1" runat="server" />
+        </a>&nbsp;</div>
     <ul class="nav navbar-nav">
       
     </ul>
@@ -30,32 +163,31 @@
 </nav>
 </head>
 
-
-<body>
- 
+    <%-- --%>
+<body id="grad" >
     
     <form id="form1" runat="server">
    <div class="row">
        <div class="col-sm-3">
-              <%int a = 1; %>
+            
           
-         <%if (a==1) {%>
+         <% if (Roles.RoleExists("storerk")) {%>
            <asp:Menu ID="Menu1" runat="server" >
                <Items>
-                   <asp:MenuItem Text="Retrieve Stock Card" Value="Retrieve Stock Card" NavigateUrl="~/SCretrieveStockCard.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Process Request" Value="Process Request" NavigateUrl="~/SCprocessRequest.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Deliver Orders" Value="Deliver Orders" NavigateUrl="~/SCdeliverOrders.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Send Orders to Supplier" Value="Send Orders to Supplier" NavigateUrl="~/SCsendOrdertoSupplier.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Recieve Order from Supplier" Value="Recieve Order from Supplier" NavigateUrl="~/SCreceiveOrderfromSupplier.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Report Stock Discrepancy" Value="Report Stock Discrepancy" NavigateUrl="~/SCreportStockDiscrepancy.aspx"></asp:MenuItem>
-                   <asp:MenuItem Text="Update Catalog" Value="Update Catalog" NavigateUrl="~/SCupdateCatalog.aspx"></asp:MenuItem>
-                   <asp:MenuItem NavigateUrl="~/SCupdateSupplierInformation.aspx" Text="Update Supplier Information" Value="Update Supplier Information"></asp:MenuItem>
-                   <asp:MenuItem NavigateUrl="~/SCupdateTenderInformation.aspx" Text="Update Tender Information" Value="Update Tender Information"></asp:MenuItem>
-                   <asp:MenuItem NavigateUrl="~/SCselectStockSupplier.aspx" Text="Select Stock Card" Value="Select Stock Card"></asp:MenuItem>
+                   <asp:MenuItem Text="Retrieve Stock Card" Value="Retrieve Stock Card" NavigateUrl="Store/SCretrieveStockCard.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Process Request" Value="Process Request" NavigateUrl="Store/SCprocessRequest.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Deliver Orders" Value="Deliver Orders" NavigateUrl="Store/SCdeliverOrders.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Send Orders to Supplier" Value="Send Orders to Supplier" NavigateUrl="Store/SCsendOrdertoSupplier.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Recieve Order from Supplier" Value="Recieve Order from Supplier" NavigateUrl="Store/SCreceiveOrderfromSupplier.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Report Stock Discrepancy" Value="Report Stock Discrepancy" NavigateUrl="Store/SCreportStockDiscrepancy.aspx"></asp:MenuItem>
+                   <asp:MenuItem Text="Update Catalog" Value="Update Catalog" NavigateUrl="Store/SCupdateCatalog.aspx"></asp:MenuItem>
+                   <asp:MenuItem NavigateUrl="Store/SCupdateSupplierInformation.aspx" Text="Update Supplier Information" Value="Update Supplier Information"></asp:MenuItem>
+                   <asp:MenuItem NavigateUrl="Store/SCupdateTenderInformation.aspx" Text="Update Tender Information" Value="Update Tender Information"></asp:MenuItem>
+                   <asp:MenuItem NavigateUrl="Store/SCselectStockSupplier.aspx" Text="Select Stock Card" Value="Select Stock Card"></asp:MenuItem>
                </Items>
            </asp:Menu>
            <%}%>
-                <%else if (a==1) {%>
+                <%else  if (Roles.RoleExists("storecrk")) {%>
            <asp:Menu ID="Menu2" runat="server" >
                <Items>
                    <asp:MenuItem Text="Issue Stock Adjustment Voucher" Value="Issue Stock Adjustment Voucher"></asp:MenuItem>
@@ -65,7 +197,7 @@
                </Items>
            </asp:Menu>
            <%}%>
-                   <%else if (Roles.RoleExists("")) {%>
+                   <%else if (Roles.RoleExists("kdjfbf")) {%>
            <asp:Menu ID="Menu3" runat="server" >
                <Items>
                    <asp:MenuItem Text="Issue Stock Adjustment Voucher" Value="Send Orders to Supplier"></asp:MenuItem>
@@ -75,7 +207,7 @@
                </Items>
            </asp:Menu>
            <%}%>
-                        <%else if (Roles.RoleExists("")) {%>
+                        <%else if (Roles.RoleExists("deparloyee")) {%>
            <asp:Menu ID="Menu4" runat="server" >
                <Items>
                    <asp:MenuItem Text="Request Items" Value="Send Orders to Supplier"></asp:MenuItem>
@@ -83,17 +215,17 @@
                </Items>
            </asp:Menu>
            <%}%>
-                  <%else if (Roles.RoleExists("")) {%>
+                  <%else if (Roles.RoleExists("storeclerk")) {%>
            <asp:Menu ID="Menu5" runat="server" >
                <Items>
                    <asp:MenuItem Text="Request Items" Value="Send Orders to Supplier"></asp:MenuItem>
-                   <asp:MenuItem Text="Accept Delivery" Value="Recieve Order from Supplier"></asp:MenuItem>
+                  <%-- <asp:MenuItem Text="Accept Delivery" Value="Recieve Order from Supplier"></asp:MenuItem>--%>
                    <asp:MenuItem Text="Set Collection Point" Value="Report Stock Discrepancy"></asp:MenuItem>
                    <asp:MenuItem Text="Edit Pending Request" Value="Update Catalog"></asp:MenuItem>
                </Items>
            </asp:Menu>
            <%}%>
-                  <%else if (Roles.RoleExists("")) {%>
+                  <%else if (Roles.RoleExists("dfdf")) {%>
            <asp:Menu ID="Menu6" runat="server" >
                <Items>
                    <asp:MenuItem Text="Approve or Reject Request" Value="Send Orders to Supplier"></asp:MenuItem>
@@ -103,7 +235,7 @@
                </Items>
            </asp:Menu>
            <%}%>
-            <%else if (Roles.RoleExists("")) {%>
+            <%else if (Roles.RoleExists("departmenthjhvhmead")) {%>
            <asp:Menu ID="Menu7" runat="server" >
                <Items>
                    <asp:MenuItem Text="Approve or Reject Request" Value="Send Orders to Supplier"></asp:MenuItem>
@@ -120,7 +252,7 @@
        
        <div class="col-sm-7">
               <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-
+             
             </asp:ContentPlaceHolder>
            </div>
 
@@ -144,6 +276,7 @@
 
 </nav>
         </div>--%>
+        
 </body>
 
 </html>

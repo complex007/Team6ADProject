@@ -225,7 +225,7 @@ public static class DepartmentDAO
     {
         string dept;
 
-        Employee e1 = ctx.Employees.Where(x => x.role == "departmenthead" && x.employeecode == headcode).First();
+        Employee e1 = ctx.Employees.Where(x => x.employeecode == headcode).First();
         dept = e1.deptcode;
         Employee e2 = ctx.Employees.Where(x => x.deptcode == dept && x.role == "departmentrepresentative").First();
         return e2;
@@ -239,7 +239,7 @@ public static class DepartmentDAO
     {
         string dept;
 
-        Employee e1 = ctx.Employees.Where(x => x.role == "departmenthead" && x.employeecode == headcode).First();
+        Employee e1 = ctx.Employees.Where(x => x.employeecode == headcode).First();
         dept = e1.deptcode;
         List<Employee> Elist = ctx.Employees.Where(x => x.deptcode == dept && x.role != "departmenthead").ToList();
         ctx.SaveChanges();
@@ -252,6 +252,8 @@ public static class DepartmentDAO
             Employee e1 = ctx.Employees.Where(x => x.employeecode == empCode).First();
             e1.role = "departmentrepresentative";
             ctx.SaveChanges();
+            Roles.AddUserToRole(e1.employeecode.ToString(), "departmentrepresentative");
+            Roles.RemoveUserFromRole(e1.employeecode.ToString(), "departmentemployee");
         }
         catch (NullReferenceException n)
         {
@@ -259,7 +261,7 @@ public static class DepartmentDAO
         }
         catch (Exception e)
         {
-            errormessage("cannot set collection point because : " + e);
+            errormessage("cannot set representative : " + e);
         }
     }
     public static void changePreviousRepresentative(int empCode)
@@ -269,6 +271,8 @@ public static class DepartmentDAO
             Employee e1 = ctx.Employees.Where(x => x.employeecode == empCode).First();
             e1.role = "departmentemployee";
             ctx.SaveChanges();
+            Roles.AddUserToRole(e1.employeecode.ToString(), "departmentemployee");
+            Roles.RemoveUserFromRole(e1.employeecode.ToString(), "departmentrepresentative");
         }
         catch (NullReferenceException n)
         {
@@ -283,7 +287,7 @@ public static class DepartmentDAO
     {
         string dept;
 
-        Employee e1 = ctx.Employees.Where(x => x.role == "departmenthead" && x.employeecode == headcode).FirstOrDefault();
+        Employee e1 = ctx.Employees.Where(x => x.employeecode == headcode).FirstOrDefault();
         List<Requisition> rl;
         dept = e1.deptcode;
         rl = ctx.Requisitions.Where(x => x.deptcode == dept && x.approvercode == null && x.approvaldate == null).ToList();
@@ -384,13 +388,13 @@ public static class DepartmentDAO
         if (!Roles.IsUserInRole(delemp.employeecode.ToString(), demprole))
         {
             Roles.AddUserToRole(delemp.employeecode.ToString(), demprole);
-            Roles.RemoveUserFromRole(heademp.employeecode.ToString(), "departmentemployee");
+            Roles.RemoveUserFromRole(delemp.employeecode.ToString(), "departmentemployee");
         }
     }
 
 
 
-public static void retriveAuthority(int headcode)
+public static void retrieveAuthority(int headcode)
 {
     string deptcode;
 
@@ -409,10 +413,10 @@ public static void retriveAuthority(int headcode)
         Roles.AddUserToRole(e.employeecode.ToString(), "departmenthead");
         Roles.RemoveUserFromRole(e.employeecode.ToString(), "delegatedhead");
     }
-    if (Roles.IsUserInRole(e.employeecode.ToString(), "delegatedemployee"))
+    if (Roles.IsUserInRole(e1.employeecode.ToString(), "delegatedemployee"))
     {
         Roles.AddUserToRole(e1.employeecode.ToString(), "departmentemployee");
-        Roles.RemoveUserFromRole(e.employeecode.ToString(), "delegatedemployee");
+        Roles.RemoveUserFromRole(e1.employeecode.ToString(), "delegatedemployee");
     }
 }
 public static void errormessage(string myStringVariable)

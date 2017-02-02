@@ -19,7 +19,7 @@ public partial class DHapproveReject : System.Web.UI.Page
         headcode = Convert.ToInt32(User.Identity.Name);
         if (!IsPostBack)
         {
-            List<Requisition> r = d.DHgetRequestionItems(headcode);
+            List<Requisition> r = d.DHgetRequisitionItems(headcode);
             List<dynamic> item = new List<dynamic>();
             List<dynamic> items = new List<dynamic>();
             if (r.Count > 0)
@@ -39,7 +39,7 @@ public partial class DHapproveReject : System.Web.UI.Page
             else
             {
                 GridView1.Visible = false;
-                Label1.Text = "No request exist currently";
+                Label1.Text = "No requests exist currently";
             }
             //}
             //else

@@ -42,7 +42,7 @@ public class DHserviceManager
     {
         DepartmentDAO.changePreviousRepresentative(empCode);
     }
-    public List<Requisition> DHgetRequestionItems(int headcode)
+    public List<Requisition> DHgetRequisitionItems(int headcode)
     {
         return DepartmentDAO.DHgetRequisitionItems(headcode);
     }
@@ -162,7 +162,7 @@ public class DHserviceManager
 
     public void retrieveAuthority(int headcode)
     {
-        DepartmentDAO.retriveAuthority(headcode);
+        DepartmentDAO.retrieveAuthority(headcode);
     }
     public List<RequisitionItem> findRequisitionItemsByHead(int headcode)
     {

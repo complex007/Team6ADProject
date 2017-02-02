@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -19,6 +20,7 @@ public partial class RetriveAuthority : System.Web.UI.Page
     protected void Button1_Click(object sender, EventArgs e)
     {
         d.retrieveAuthority(headcode);
-        Response.Redirect("~/Login.aspx");
+        FormsAuthentication.SignOut();
+        FormsAuthentication.RedirectToLoginPage();
     }
 }

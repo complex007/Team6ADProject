@@ -15,11 +15,12 @@ public partial class DHassignRepresentative : System.Web.UI.Page
     DHserviceManager d = new DHserviceManager();
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        headcode = Convert.ToInt32(User.Identity.Name);
+        e1 = d.getDepartmentRepresentative(headcode);
         if (!IsPostBack)
         {
-            IIdentity id = User.Identity;
-            headcode = Convert.ToInt32(User.Identity.Name);
-            e1 = d.getDepartmentRepresentative(headcode);
+            
             List<Employee> elist = d.PopulateEmpList(headcode);
             DropDownList1.DataSource = elist;
             DropDownList1.DataTextField = "employeename";
@@ -31,7 +32,7 @@ public partial class DHassignRepresentative : System.Web.UI.Page
 
     }
 
-    protected void Button1_Click1(object sender, EventArgs e)
+    protected void Button1_Click(object sender, EventArgs e)
     {
         Label1.Text = DropDownList1.SelectedItem.Text;
         int selectedVal = Convert.ToInt32(DropDownList1.SelectedValue);
