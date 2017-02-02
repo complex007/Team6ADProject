@@ -6,14 +6,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using Model;
+using System.Security.Principal;
 
 public partial class SCsendOrdertoSupplier : System.Web.UI.Page
 {
     SCserviceManager sc = new SCserviceManager();
- 
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
-     
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         if (GridView1.Rows.Count==0)
         {
             //Button1.Visible = false;
@@ -263,7 +265,7 @@ public partial class SCsendOrdertoSupplier : System.Web.UI.Page
                 item.supplier1 = GridView1.Rows[i].Cells[6].Text;
             }
             item.reorderquantity = Convert.ToInt32(GridView1.Rows[i].Cells[3].Text);
-            sc.raiseReorder(item, 1025);
+            sc.raiseReorder(item, role);
 
         }
         ViewState.Remove("list");

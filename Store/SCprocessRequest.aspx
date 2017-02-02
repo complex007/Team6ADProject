@@ -50,7 +50,7 @@
     <asp:UpdateProgress ID="updateprogress" runat="server" AssociatedUpdatePanelID="updatepanel">
         <ProgressTemplate>
             <div class="div1" style="margin-left:160px">
-                <asp:Image ID="image" ImageUrl="Loading_icon.gif" AlternateText="processing" runat="server" />
+                <asp:Image ID="image" ImageUrl="~/Images/Loading_icon.gif" AlternateText="processing" runat="server" />
                 </div>
         </ProgressTemplate>
     </asp:UpdateProgress>

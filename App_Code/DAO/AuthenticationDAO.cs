@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-public class AuthenticationDAO
+public static class AuthenticationDAO
 {
     static team6adprojectdbEntities ds = new team6adprojectdbEntities();
     public static Employee findEmployeeByName(string name)

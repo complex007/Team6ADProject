@@ -10,7 +10,6 @@ using System.Web;
 
 public class DRserviceManager
 {
-    DepartmentDAO ddao = new DepartmentDAO();
     public DRserviceManager()
     {
         //
@@ -19,11 +18,11 @@ public class DRserviceManager
     }
     public Department DRfindCurrentCollectionPoint(int id)
     {
-        return ddao.DRfindCurrentCollectionPoint(id);
+        return DepartmentDAO.DRfindCurrentCollectionPoint(id);
 
     }
     public void DRupdateCollectionPoint(string Cpoint, int repcode)
     {
-        ddao.DRupdateCollectionPoint(Cpoint, repcode);
+        DepartmentDAO.DRupdateCollectionPoint(Cpoint, repcode);
     }
 }

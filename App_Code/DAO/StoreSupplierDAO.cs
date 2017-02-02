@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Web;
 
 
-public class StoreSupplierDAO
+public static class StoreSupplierDAO
 {
     static team6adprojectdbEntities ds = new team6adprojectdbEntities();
     public static List<SOrder> findUnapprovedOrders()

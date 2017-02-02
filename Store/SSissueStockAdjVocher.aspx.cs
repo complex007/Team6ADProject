@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,9 +12,11 @@ public partial class SSissueStockAdjVocher : System.Web.UI.Page
 {
     List<AdjustmentVoucher> adjs;
     SSserviceManager ssmanager = new SSserviceManager();
-    int userNo = 1029;
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         adjs = ssmanager.findUnapprovedVouchers();
         GridView1.DataSource = null;
         GridView1.DataBind();
@@ -61,9 +64,9 @@ public partial class SSissueStockAdjVocher : System.Web.UI.Page
                     try
                     {
                         if (TextBox1.Text.Trim() == "")
-                            ssmanager.deleteAdjustmentByVoucherNumber(poNum, userNo);
+                            ssmanager.deleteAdjustmentByVoucherNumber(poNum, role);
                         else
-                            ssmanager.deleteAdjustmentByVoucherNumber(poNum, userNo, TextBox1.Text);
+                            ssmanager.deleteAdjustmentByVoucherNumber(poNum, role, TextBox1.Text);
                     }
                     //ClassList.deleteAdjustmentByVoucherNumber(poNum);
                     catch (SSexception ex)
@@ -80,7 +83,7 @@ public partial class SSissueStockAdjVocher : System.Web.UI.Page
                     int poNum = adjs[Convert.ToInt32(e.CommandArgument)].vouchernumber;
                     try
                     {
-                        ssmanager.approveAdjustmentByVoucherNumber(poNum, userNo);
+                        ssmanager.approveAdjustmentByVoucherNumber(poNum, role);
                     }
                     catch (SSexception ex)
                     {
@@ -105,7 +108,7 @@ public partial class SSissueStockAdjVocher : System.Web.UI.Page
         {
             try
             {
-                ssmanager.approveAdjustmentByVoucherNumber(i.vouchernumber, userNo);
+                ssmanager.approveAdjustmentByVoucherNumber(i.vouchernumber, role);
             }
             catch (SSexception ex)
             {
@@ -130,7 +133,7 @@ public partial class SSissueStockAdjVocher : System.Web.UI.Page
             string toemail = i.Employee.employeeemail;
             try
             {
-                ssmanager.deleteAdjustmentByVoucherNumber(poNum, userNo);
+                ssmanager.deleteAdjustmentByVoucherNumber(poNum, role);
             }
             //ClassList.deleteAdjustmentByVoucherNumber(poNum);
             catch (SSexception ex)

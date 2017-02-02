@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,9 +14,11 @@ public partial class SSapproveRejectOrder : System.Web.UI.Page
 {
     List<SOrder> orders;
     SSserviceManager ssmanager = new SSserviceManager();
-    int userNo = 1029;
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         orders = ssmanager.findUnapprovedOrders();
         GridView1.DataSource = null;
         GridView1.DataBind();
@@ -60,9 +63,9 @@ public partial class SSapproveRejectOrder : System.Web.UI.Page
                     try
                     {
                         if (TextBox1.Text.Trim() == "")
-                            ssmanager.deleteOrderByPurchaseOrder(poNum, userNo);
+                            ssmanager.deleteOrderByPurchaseOrder(poNum, role);
                         else
-                            ssmanager.deleteOrderByPurchaseOrder(poNum, userNo, TextBox1.Text);
+                            ssmanager.deleteOrderByPurchaseOrder(poNum, role, TextBox1.Text);
                     }
                     catch (SSexception ex)
                     {
@@ -77,7 +80,7 @@ public partial class SSapproveRejectOrder : System.Web.UI.Page
                     int poNum = orders[Convert.ToInt32(e.CommandArgument)].purchaseordernumber;
                     try
                     {
-                        ssmanager.approveOrderByPurchaseOrder(poNum, userNo);
+                        ssmanager.approveOrderByPurchaseOrder(poNum, role);
                     }
                     catch (SSexception ex)
                     {
@@ -101,7 +104,7 @@ public partial class SSapproveRejectOrder : System.Web.UI.Page
         {
             try
             {
-                ssmanager.approveOrderByPurchaseOrder(i.purchaseordernumber, userNo);
+                ssmanager.approveOrderByPurchaseOrder(i.purchaseordernumber, role);
             }
             catch (SSexception ex)
             {
@@ -129,9 +132,9 @@ public partial class SSapproveRejectOrder : System.Web.UI.Page
             try
             {
                 if (TextBox1.Text.Trim() == "")
-                    ssmanager.deleteOrderByPurchaseOrder(poNum, userNo);
+                    ssmanager.deleteOrderByPurchaseOrder(poNum, role);
                 else
-                    ssmanager.deleteOrderByPurchaseOrder(poNum, userNo, TextBox1.Text);
+                    ssmanager.deleteOrderByPurchaseOrder(poNum, role, TextBox1.Text);
             }
             catch (SSexception ex)
             {

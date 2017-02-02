@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-public class StoreDepartmentDAO
+public static class StoreDepartmentDAO
 {
     static team6adprojectdbEntities ds = new team6adprojectdbEntities();
 

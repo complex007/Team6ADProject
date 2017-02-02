@@ -11,7 +11,6 @@ using System.Web;
 
 public class DEserviceManager
 {
-    DepartmentDAO ddao = new DepartmentDAO();
     public DEserviceManager()
     {
         //
@@ -21,32 +20,32 @@ public class DEserviceManager
 
     public List<Item> PopulateCatDropDownList(string category)
     {
-        return ddao.PopulateCatDropDownList(category);
+        return DepartmentDAO.PopulateCatDropDownList(category);
     }
 
     public string getUnit(string itemcode)
     {
-        return ddao.getUnit(itemcode);
+        return DepartmentDAO.getUnit(itemcode);
     }
 
     public void submitRequisitionItemList(List<String> qty, List<String> itemcode, int empcode)
     {
-        ddao.submitRequisitionItemList(qty, itemcode, empcode);
+        DepartmentDAO.submitRequisitionItemList(qty, itemcode, empcode);
     }
 
     public List<dynamic> retreiveRequistionsItems(int empcode)
     {
-        return ddao.retreiveRequistionsItems(empcode);
+        return DepartmentDAO.retreiveRequistionsItems(empcode);
     }
 
     public void updateRequistionsItems(string itemcode, string qty, string reqid, string orgqty)
     {
-        ddao.updateRequistionsItems(itemcode, qty, reqid, orgqty);
+        DepartmentDAO.updateRequistionsItems(itemcode, qty, reqid, orgqty);
     }
 
     public void deleteRequistionsItems(string itemcode, string qty, string reqid, int empcode)
     {
-        ddao.deleteRequistionsItems(itemcode, qty, reqid, empcode);
+        DepartmentDAO.deleteRequistionsItems(itemcode, qty, reqid, empcode);
     }
     public static void sendEmail(string message)
     {

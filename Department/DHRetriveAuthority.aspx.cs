@@ -18,7 +18,7 @@ public partial class RetriveAuthority : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        d.retriveAuthority(headcode);
+        d.retrieveAuthority(headcode);
         Response.Redirect("~/Login.aspx");
     }
 }

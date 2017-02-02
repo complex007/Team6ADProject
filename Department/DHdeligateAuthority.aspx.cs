@@ -84,8 +84,8 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        try
-        {
+        //try
+        //{
             if (Page.IsValid)
             {
                 int ecode;
@@ -94,21 +94,22 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
                 startdate = TextBox1.Text;
                 enddate = TextBox2.Text;
                 from = Convert.ToDateTime(startdate);
-                to = Convert.ToDateTime(startdate);
+                to = Convert.ToDateTime(enddate);
                 ecode = Convert.ToInt32(DropDownList1.SelectedValue);
                 d.delegateAuthority(headcode, ecode, from, to);
                 if (from.CompareTo(DateTime.Now) <= 0)
                 {
+                    d.executeDelegation();
                     FormsAuthentication.SignOut();
                     FormsAuthentication.RedirectToLoginPage();
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            MessageBox1.Show(this.Page, "delegation failed. try again");
-            System.Diagnostics.Debug.WriteLine(ex);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    MessageBox1.Show(this.Page, "delegation failed. try again");
+        //    System.Diagnostics.Debug.WriteLine(ex);
+        //}
     }
 
 }

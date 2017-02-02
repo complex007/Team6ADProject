@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
-
+using System.Web.Security;
 
 /// <summary>
 /// Summary description for DHserviceManager
 /// </summary>
 public class DHserviceManager
 {
-    DepartmentDAO ddao = new DepartmentDAO();
+
     public DHserviceManager()
     {
         //
@@ -20,47 +20,47 @@ public class DHserviceManager
     }
     public Department DHfindCurrentCollectionPoint(int id)
     {
-        return ddao.DHfindCurrentCollectionPoint(id);
+        return DepartmentDAO.DHfindCurrentCollectionPoint(id);
     }
     public void DHupdateCollectionPoint(string Cpoint, int headcode)
     {
-        ddao.DHupdateCollectionPoint(Cpoint, headcode);
+        DepartmentDAO.DHupdateCollectionPoint(Cpoint, headcode);
     }
     public Employee getDepartmentRepresentative(int headcode)
     {
-        return ddao.getDepartmentRepresentative(headcode);
+        return DepartmentDAO.getDepartmentRepresentative(headcode);
     }
     public List<Employee> PopulateEmpList(int headcode)
     {
-        return ddao.PopulateEmpList(headcode);
+        return DepartmentDAO.PopulateEmpList(headcode);
     }
     public void setRepresentative(int empCode)
     {
-        ddao.setRepresentative(empCode);
+        DepartmentDAO.setRepresentative(empCode);
     }
     public void changePreviousRepresentative(int empCode)
     {
-        ddao.changePreviousRepresentative(empCode);
+        DepartmentDAO.changePreviousRepresentative(empCode);
     }
     public List<Requisition> DHgetRequestionItems(int headcode)
     {
-        return ddao.DHgetRequestionItems(headcode);
+        return DepartmentDAO.DHgetRequisitionItems(headcode);
     }
     public IEnumerable<dynamic> getItems(int reqid)
     {
-        return ddao.getItems(reqid);
+        return DepartmentDAO.getItems(reqid);
     }
 
     public void approve(int id, int headcode)
     {
 
-        ddao.approve(id, headcode);
+        DepartmentDAO.approveRequisition(id, headcode);
     }
 
     public void reject(int id)
     {
 
-        ddao.reject(id);
+        DepartmentDAO.rejectRequisition(id);
 
     }
 
@@ -110,43 +110,68 @@ public class DHserviceManager
         }
         catch (Exception e)
         {
-            ddao.errormessage("Mail was not sent." + e.ToString());
+            DepartmentDAO.errormessage("Mail was not sent." + e.ToString());
         }
     }
 
     public string getEmployee(int requid)
     {
-        return ddao.getEmployee(requid);
+        return DepartmentDAO.getEmployee(requid);
 
 
     }
 
     public Employee getDepartmentRepresentativeByDept(string dept)
     {
-        return ddao.getDepartmentRepresentativeByDept(dept);
+        return DepartmentDAO.getDepartmentRepresentativeByDept(dept);
     }
     public List<Employee> getAllEmployees(int headcode)
     {
-        return ddao.getAllEmployees(headcode);
+        return DepartmentDAO.getAllEmployees(headcode);
     }
 
     public void delegateAuthority(int headcode, int ecode, DateTime from, DateTime to)
     {
-        ddao.delegateAuthority(headcode, ecode, from, to);
+        DepartmentDAO.delegateAuthority(headcode, ecode, from, to);
+    }
+    public void executeDelegation()
+    {
+        foreach (Department dept in DepartmentDAO.ListAllDepartments())
+        {
+            if (DepartmentDAO.findHeadByDepartment(dept.deptcode) != null)
+            {
+                int headcode = DepartmentDAO.findHeadByDepartment(dept.deptcode).employeecode;
+                if (dept.delegatecode.HasValue && dept.startdate.HasValue && dept.enddate.HasValue)
+                {
+                    
+                    if (((DateTime)dept.startdate).CompareTo(DateTime.Now) <= 0)
+                    {
+                        if (((DateTime)dept.enddate).CompareTo(DateTime.Now) >= 0)
+                        {
+                            DepartmentDAO.executeDelegation(dept.deptcode);
+                        }
+                        else
+                        {
+                            retrieveAuthority(DepartmentDAO.findHeadByDepartment(dept.deptcode).employeecode);
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    public void retriveAuthority(int headcode)
+    public void retrieveAuthority(int headcode)
     {
-        ddao.retriveAuthority(headcode);
+        DepartmentDAO.retriveAuthority(headcode);
     }
     public List<RequisitionItem> findRequisitionItemsByHead(int headcode)
     {
-        List<RequisitionItem> items = ddao.findRequisitionItemsByHead(headcode);
+        List<RequisitionItem> items = DepartmentDAO.findRequisitionItemsByHead(headcode);
         return items;
     }
     public Requisition findRequisitionByRequisitionId(int requisitionid)
     {
-        Requisition item = ddao.findRequisitionByRequisitionId(requisitionid);
+        Requisition item = DepartmentDAO.findRequisitionByRequisitionId(requisitionid);
         return item;
 
     }

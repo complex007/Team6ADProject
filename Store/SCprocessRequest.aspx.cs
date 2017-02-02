@@ -7,14 +7,17 @@ using System.Web.UI.WebControls;
 using System.Net.Mail;
 using System.Data;
 using Model;
+using System.Security.Principal;
 
 public partial class SCprocessRequest : System.Web.UI.Page
 {
     SCserviceManager sc = new SCserviceManager();
+    int role;
     //static int clerkcode;
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         if (!IsPostBack)
         {
             //    clerkcode = Request.QueryString[];
@@ -162,7 +165,7 @@ public partial class SCprocessRequest : System.Web.UI.Page
 
     private void GenerateUniqueData(int cellno)
     {
-        
+
         int z = 0;
         int j = 0;
         int y = 0;
@@ -177,7 +180,7 @@ public partial class SCprocessRequest : System.Web.UI.Page
             GridViewRow row = GridView1.Rows[j];
             TextBox tx = (TextBox)row.FindControl("Textfrom");
             allocated = sc.recommendDistribution(initialvalue, dneed);
-           tx.Text = allocated[0].ToString();
+            tx.Text = allocated[0].ToString();
         }
         int flag = 1;
         string initialnamevalue = GridView1.Rows[0].Cells[cellno].Text;
@@ -304,7 +307,7 @@ public partial class SCprocessRequest : System.Web.UI.Page
         List<String> error = new List<string>();
         if (GridView1.Rows.Count != 0)
         {
-   
+
             GridViewRow r = GridView1.Rows[0];
             TextBox t = (TextBox)r.FindControl("Textfrom");
             int actual = Convert.ToInt32(GridView1.Rows[0].Cells[3].Text);
@@ -365,131 +368,131 @@ public partial class SCprocessRequest : System.Web.UI.Page
 
         if (error.Count == 0)
         {
-            
+
 
             List<String> deptList = new List<string>();
-                List<String> dlist = new List<string>();
-                string itemcode, dept;
-                int allocatedqty, actualqty1 = 0, repcode;
+            List<String> dlist = new List<string>();
+            string itemcode, dept;
+            int allocatedqty, actualqty1 = 0, repcode;
 
-                for (int i = 0; i < GridView1.Rows.Count; i++)
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                Disbursement disb = new Disbursement();
+                Disbursement disbid = new Disbursement();
+                String d = GridView1.Rows[i].Cells[5].Text;
+
+
+                dept = sc.getdepartmentcode(d);
+                repcode = sc.getrepresentativecode(dept);
+
+                disb.representativecode = repcode;
+                disb.deptcode = dept;
+                disbid = sc.addtodisbursement(disb);
+
+
+                GridViewRow row = GridView1.Rows[i];
+                TextBox tx = (TextBox)row.FindControl("Textfrom");
+
+                itemcode = GridView1.Rows[i].Cells[8].Text;
+
+                allocatedqty = Convert.ToInt32(tx.Text);
+                DisbursementItem disbitem = new DisbursementItem();
+                disbitem.disbursementid = disbid.disbursementid;
+                disbitem.itemcode = itemcode;
+                disbitem.allocatedquantity = allocatedqty;
+                sc.addtodisbursementitem(disbid, disbitem);
+
+
+
+
+
+
+                int deptneedsum = 0;
+                int initialactualqty = 0;
+                int deptneed = Convert.ToInt32(GridView1.Rows[i].Cells[6].Text);
+                if (GridView1.Rows[i].Cells[2].Text.Equals(""))
                 {
-                    Disbursement disb = new Disbursement();
-                    Disbursement disbid = new Disbursement();
-                    String d = GridView1.Rows[i].Cells[5].Text;
+                    deptneedsum = 0;
+                }
+                else
+                {
+                    deptneedsum = Convert.ToInt32(GridView1.Rows[i].Cells[2].Text);
+                }
+                int allocated = Convert.ToInt32(tx.Text);
+                int requid = Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
+                if (GridView1.Rows[i].Cells[3].Text.Equals(""))
+                {
+                    initialactualqty = 0;
+                }
+                else
+                {
+                    initialactualqty = Convert.ToInt32(GridView1.Rows[i].Cells[3].Text);
+                }
+                String dep = GridView1.Rows[i].Cells[5].Text;
+                dept = sc.getdepartmentcode(dep);
+                int requisition = Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
+                Requisition employeecode = sc.getemployeecode(requisition);
 
-
-                    dept = sc.getdepartmentcode(d);
-                    repcode = sc.getrepresentativecode(dept);
-
-                    disb.representativecode = repcode;
-                    disb.deptcode = dept;
-                    disbid = sc.addtodisbursement(disb);
-
-
-                    GridViewRow row = GridView1.Rows[i];
-                    TextBox tx = (TextBox)row.FindControl("Textfrom");
-
-                    itemcode = GridView1.Rows[i].Cells[8].Text;
-
-                    allocatedqty = Convert.ToInt32(tx.Text);
-                    DisbursementItem disbitem = new DisbursementItem();
-                    disbitem.disbursementid = disbid.disbursementid;
-                    disbitem.itemcode = itemcode;
-                    disbitem.allocatedquantity = allocatedqty;
-                    sc.addtodisbursementitem(disbid, disbitem);
-
-
-
-
-
-
-                    int deptneedsum = 0;
-                    int initialactualqty = 0;
-                    int deptneed = Convert.ToInt32(GridView1.Rows[i].Cells[6].Text);
-                    if (GridView1.Rows[i].Cells[2].Text.Equals(""))
+                if (GridView1.Rows[i].Cells[3].Text != " ")
+                {
+                    if (initialactualqty > deptneedsum)
                     {
-                        deptneedsum = 0;
-                    }
-                    else
-                    {
-                        deptneedsum = Convert.ToInt32(GridView1.Rows[i].Cells[2].Text);
-                    }
-                    int allocated = Convert.ToInt32(tx.Text);
-                    int requid = Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
-                    if (GridView1.Rows[i].Cells[3].Text.Equals(""))
-                    {
-                        initialactualqty = 0;
-                    }
-                    else
-                    {
-                        initialactualqty = Convert.ToInt32(GridView1.Rows[i].Cells[3].Text);
-                    }
-                    String dep = GridView1.Rows[i].Cells[5].Text;
-                    dept = sc.getdepartmentcode(dep);
-                    int requisition = Convert.ToInt32(GridView1.Rows[i].Cells[4].Text);
-                    Requisition employeecode = sc.getemployeecode(requisition);
-
-                    if (GridView1.Rows[i].Cells[3].Text != " ")
-                    {
-                        if (initialactualqty > deptneedsum)
+                        initialactualqty = initialactualqty - deptneedsum;
+                        Item reorderlevel = sc.getreorderlevel(GridView1.Rows[i].Cells[8].Text);
+                        if (initialactualqty <= reorderlevel.reorderlevel)
                         {
-                            initialactualqty = initialactualqty - deptneedsum;
-                            Item reorderlevel = sc.getreorderlevel(GridView1.Rows[i].Cells[8].Text);
-                            if (initialactualqty <= reorderlevel.reorderlevel)
-                            {
-                                sc.raiseReorder(reorderlevel, 1025);
+                            sc.raiseReorder(reorderlevel, role);
 
-                                //Add clerk code here
-                            }
-
+                            //Add clerk code here
                         }
-                        else
-                        {
-                            initialactualqty = deptneedsum - initialactualqty;
-                            Item reorderlevel = sc.getreorderlevel(GridView1.Rows[i].Cells[8].Text);
-                            if (initialactualqty <= reorderlevel.reorderlevel)
-                            {
-                                sc.raiseReorder(reorderlevel, 1025);
-                            }
-
-                        }
-
-                    }
-                    if (GridView1.Rows[i].Cells[3].Text.Equals(""))
-                    {
-                        for (int j = i; j > 0; j--)
-                        {
-                            if (GridView1.Rows[j].Cells[3].Text != "")
-                            {
-                                actualqty1 = Convert.ToInt32(GridView1.Rows[j].Cells[3].Text);
-                                break;
-                            }
-                        }
-
 
                     }
                     else
                     {
-                        actualqty1 = Convert.ToInt32(GridView1.Rows[i].Cells[3].Text);
+                        initialactualqty = deptneedsum - initialactualqty;
+                        Item reorderlevel = sc.getreorderlevel(GridView1.Rows[i].Cells[8].Text);
+                        if (initialactualqty <= reorderlevel.reorderlevel)
+                        {
+                            sc.raiseReorder(reorderlevel, role);
+                        }
+
                     }
-                    string itemcode1 = GridView1.Rows[i].Cells[8].Text;
 
-
-
-
-
-
-                    RequisitionItem status = sc.getstatus(requid, itemcode1);
-
-                    if (deptneed == allocated)
+                }
+                if (GridView1.Rows[i].Cells[3].Text.Equals(""))
+                {
+                    for (int j = i; j > 0; j--)
                     {
-                        sc.updateStatus(requid, itemcode1, actualqty1 - allocated);
+                        if (GridView1.Rows[j].Cells[3].Text != "")
+                        {
+                            actualqty1 = Convert.ToInt32(GridView1.Rows[j].Cells[3].Text);
+                            break;
+                        }
                     }
-                    else if (deptneed != allocated)
-                    {
-                        sc.owestatus(requid, itemcode1, deptneed - allocated, allocated, dept, employeecode.employeecode, status);
-                    }
+
+
+                }
+                else
+                {
+                    actualqty1 = Convert.ToInt32(GridView1.Rows[i].Cells[3].Text);
+                }
+                string itemcode1 = GridView1.Rows[i].Cells[8].Text;
+
+
+
+
+
+
+                RequisitionItem status = sc.getstatus(requid, itemcode1);
+
+                if (deptneed == allocated)
+                {
+                    sc.updateStatus(requid, itemcode1, actualqty1 - allocated);
+                }
+                else if (deptneed != allocated)
+                {
+                    sc.owestatus(requid, itemcode1, deptneed - allocated, allocated, dept, employeecode.employeecode, status);
+                }
             }
             Response.Redirect("SCprocessRequest.aspx");
 
@@ -497,16 +500,16 @@ public partial class SCprocessRequest : System.Web.UI.Page
         else if (error.Count > 0)
         {
             //String s = "";
-          //  BulletedList1.Items.Add("Allocation Exceeded the Actual Quantity");
+            //  BulletedList1.Items.Add("Allocation Exceeded the Actual Quantity");
             for (int i = 0; i < error.Count; i++)
             {
                 BulletedList1.Items.Add(error[i]);
             }
-           // Label1.Text = s;
-           
+            // Label1.Text = s;
+
         }
     }
-    
+
 
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {

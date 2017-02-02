@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -15,9 +16,11 @@ public partial class SCreportStockDiscrepancy : System.Web.UI.Page
     static List<AdjustmentItem> alist = new List<AdjustmentItem>();
     static double cost = 0;
     static AdjustmentVoucher avoucher = new AdjustmentVoucher();
-    
+    int role;
     protected void Page_Load(object sender, EventArgs e)
     {
+        IIdentity id = User.Identity;
+        role = Convert.ToInt32(User.Identity.Name);
         if (!IsPostBack) { 
            
             List<string> slist = scService.getSuppliercode();
@@ -92,7 +95,7 @@ public partial class SCreportStockDiscrepancy : System.Web.UI.Page
         //AdjustmentVoucher avoucher = new AdjustmentVoucher();
         avoucher.issuedate=Calendar1.SelectedDate;
         avoucher.cost = cost;
-        avoucher.clerkcode = 1026;
+        avoucher.clerkcode = role;
 
         scService.adjustItem(avoucher);
         GridView1.DataSource = null;
