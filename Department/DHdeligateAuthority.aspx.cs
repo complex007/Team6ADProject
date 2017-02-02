@@ -84,8 +84,8 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        //try
-        //{
+        try
+        {
             if (Page.IsValid)
             {
                 int ecode;
@@ -104,14 +104,13 @@ public partial class DHdeligateAuthority : System.Web.UI.Page
                     FormsAuthentication.RedirectToLoginPage();
                 }
             }
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox1.Show(this.Page, "delegation failed. try again");
-        //    System.Diagnostics.Debug.WriteLine(ex);
-        //}
+        }
+        catch (Exception ex)
+        {
+            MessageBox1.Show(this.Page, "delegation failed. try again");
+            System.Diagnostics.Debug.WriteLine(ex);
+        }
     }
-
 }
 //public static class MessageBox1
 //{
