@@ -45,12 +45,15 @@ public static class StoreDepartmentDAO
         return dlist;
     }
 
-    public static List<DisbursementItem> findDeliverDisburseItemByDisburseid(int id)
+    public static List<DisbursementItem> findDeliverDisburseItemByDisburseid(string deptcode, string col)
     {
         List<DisbursementItem> ditems = new List<DisbursementItem>();
-        ditems = ds.DisbursementItems.Where(x => x.disbursementid == id).ToList<DisbursementItem>();
+
+        ditems = ds.DisbursementItems.Where(x => x.Disbursement.deptcode == deptcode && x.Disbursement.Department.collectionpoint == col && x.Disbursement.collectiondate == null).ToList<DisbursementItem>();
         return ditems;
     }
+
+
     public static void UpdateDisbursementItem(List<DisbursementItem> items)
     {
         for (int i = 0; i < items.Count; i++)
@@ -243,4 +246,5 @@ public static class StoreDepartmentDAO
         return repcode;
 
     }
+
 }

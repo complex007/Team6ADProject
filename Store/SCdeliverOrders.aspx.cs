@@ -269,7 +269,7 @@ public partial class SCDeliverOrders : System.Web.UI.Page
             int statuscount = sc.getstatuscount(reqlist[z].requisitionid);
             if (reqcount == statuscount)
             {
-                sc.updaterequisition(reqlist[z].requisitionid, approvercode);
+                sc.updaterequisition(reqlist[z].requisitionid);
             }
 
         }

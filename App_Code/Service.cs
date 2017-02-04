@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
+using System.Web.Security;
 
 // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service" in code, svc and config file together.
 public class Service : IService
@@ -31,12 +33,13 @@ public class Service : IService
     }
     public WCFDisbursementItem[] findDeliverDisburseItemByDisburseid(string id)
     {
-        int disid = Convert.ToInt32(id);
-        List<DisbursementItem> items = scmanager.findDeliverDisburseItemByDisburseid(disid);
+        List<string> names = id.Split(',').ToList<string>();
+        List<DisbursementItem> items = scmanager.findDeliverDisburseItemByDisburseid(names[0], names[1]);
         List<WCFDisbursementItem> itemarray = new List<WCFDisbursementItem>();
         foreach (DisbursementItem i in items)
         {
-            WCFDisbursementItem item = WCFDisbursementItem.Make(i.disbursementid, i.itemcode, i.allocatedquantity, i.actualquantity);
+            int? allocated = i.allocatedquantity;
+            WCFDisbursementItem item = WCFDisbursementItem.Make(i.disbursementid, i.itemcode, i.allocatedquantity, allocated, i.Item.supplier1, i.Item.supplier2, i.Item.supplier3);
             itemarray.Add(item);
         }
         return itemarray.ToArray();
@@ -44,14 +47,63 @@ public class Service : IService
 
     public void UpdateDisbursementItem(List<WCFDisbursementItem> disitems)
     {
-        List<DisbursementItem> items = new List<DisbursementItem>();
+       
+        AdjustmentVoucher adjs = new AdjustmentVoucher();
+        int clerkcode = Convert.ToInt32(disitems[0].Supplier2);
+        double cost = 0;
         for (int i = 0; i < disitems.Count; i++)
         {
+
             DisbursementItem item = scmanager.findDisbursementByDisburseAndItem(disitems[i].Disbursementid, disitems[i].Itemcode);
             item.actualquantity = disitems[i].Actualquantity;
-            items.Add(item);
+            
+            int al = disitems[i].Allocatedquantity;
+            int ac = (int)disitems[i].Actualquantity;
+            int minus = ac - al;
+            string dept = item.Disbursement.deptcode;
+            List<RequisitionItem> rlist = new List<RequisitionItem>();
+            List<Requisition> reqlist = new List<Requisition>();
+            rlist = scmanager.getrequisitions(dept);
+            reqlist = scmanager.getreq(dept);
+            if (minus < 0)
+            {
+                double price = scmanager.findPriceBySupplierAndItem(disitems[i].Supplier1, disitems[i].Itemcode);
+                cost += price;
+
+                scmanager.addadjustmentvoucher(price, 1025, item.itemcode, Math.Abs(minus));
+                foreach (RequisitionItem it in rlist)
+                {
+                    if (it.itemcode == item.itemcode)
+                    {
+                        scmanager.deliverstatus(it.requisitionid, it.itemcode, Math.Abs(minus), ac, dept, it.Requisition.employeecode);
+                    }
+                }
+            }
+            else
+            {
+                foreach (RequisitionItem it in rlist)
+                {
+                    if (it.itemcode == item.itemcode)
+                    {
+                        scmanager.updatestatusto3(it.requisitionid, it.itemcode);
+                    }
+                }
+            }
+            scmanager.updatedisbursement(item.disbursementid,item.itemcode,ac);
+            for (int z = 0; z < reqlist.Count; z++)
+            {
+                int reqcount = scmanager.getreqcount(reqlist[z].requisitionid);
+                int statuscount = scmanager.getstatuscount(reqlist[z].requisitionid);
+                if (reqcount == statuscount)
+                {
+                    scmanager.updaterequisition(reqlist[z].requisitionid);
+                }
+
+            }
+            scmanager.updatedisb(item.Disbursement.deptcode);
         }
-        scmanager.UpdateDisbursementItem(items);
+       
+       
     }
     public WCFItem findItemByItemcode(string id)
     {
@@ -154,10 +206,20 @@ public class Service : IService
         return col;
     }
 
-    public WCFEmployee Login(WCFLogin login)
+    public string Login(WCFLogin login)
     {
-        Employee e = amanager.findEmployeeByName(login.Username);
-        WCFEmployee wcfe = WCFEmployee.Make(e.employeecode, e.employeename, e.employeeemail, e.deptcode, e.role, e.del);
+        string wcfe = "";
+        string usercode = Convert.ToString(login.Usercode);
+       bool result= Membership.ValidateUser(usercode, login.Password);
+        if (result)
+        {
+            string role = Roles.GetRolesForUser(usercode)[0];
+            Random rnd1 = new Random(133333333);
+            int i1 = rnd1.Next(1, 99999999);
+            Random rnd2 = new Random(2888888);
+            int i2 = rnd2.Next(1, 99999999);
+            wcfe = ":" + usercode + ":" +role + ":" + i1 + i2;
+        }
         return wcfe;
     }
     public string[] getuniqueitems()

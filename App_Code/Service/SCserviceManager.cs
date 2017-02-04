@@ -156,6 +156,8 @@ public class SCserviceManager
         return req;
     }
 
+   
+
     public Item getItemByItemdescription(string itemdescription)
     {
         Item i = sce.Items.Where(x => x.itemdescription == itemdescription).Select(y => y).FirstOrDefault();
@@ -253,10 +255,10 @@ public class SCserviceManager
         dlist = StoreDepartmentDAO.findDeliverDisburseByCollectionPoint(colpoint);
         return dlist;
     }
-    public List<DisbursementItem> findDeliverDisburseItemByDisburseid(int id)
+    public List<DisbursementItem> findDeliverDisburseItemByDisburseid(string deptcode, string col)
     {
         List<DisbursementItem> items = new List<DisbursementItem>();
-        items = StoreDepartmentDAO.findDeliverDisburseItemByDisburseid(id);
+        items = StoreDepartmentDAO.findDeliverDisburseItemByDisburseid(deptcode, col);
         return items;
     }
     public void UpdateDisbursementItem(List<DisbursementItem> items)
@@ -727,10 +729,9 @@ public class SCserviceManager
         return count;
     }
 
-    public void updaterequisition(int reqid, int approvercode)
+    public void updaterequisition(int reqid)
     {
-        Requisition req = sce.Requisitions.Where(x => x.requisitionid == reqid).First();
-        req.approvercode = approvercode;
+        Requisition req = sce.Requisitions.Where(x => x.requisitionid == reqid).First();       
         req.approvaldate = DateTime.Now;
         req.status = 1;
         sce.SaveChanges();
@@ -807,5 +808,6 @@ public class SCserviceManager
             return orders;
         }
     }
+
 
 }
